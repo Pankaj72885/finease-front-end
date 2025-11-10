@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 
-const Login = () => {
+export function Component() {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -185,4 +185,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+Component.displayName = "LoginPage";

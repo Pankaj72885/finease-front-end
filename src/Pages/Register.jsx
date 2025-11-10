@@ -6,7 +6,7 @@ import { Link, Navigate, useLocation, useNavigate } from "react-router";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-const Register = () => {
+export function Component() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -317,4 +317,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+Component.displayName = "RegisterPage";

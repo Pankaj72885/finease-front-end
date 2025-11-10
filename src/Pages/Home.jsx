@@ -8,7 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { ArrowRight, DollarSign, PiggyBank, TrendingUp } from "lucide-react";
 import { Link } from "react-router";
 
-const Home = () => {
+export function Component() {
   const { currentUser } = useAuth();
 
   const { data: summary, isLoading } = useQuery({
@@ -257,4 +257,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+Component.displayName = "HomePage";
