@@ -1,4 +1,3 @@
-import ErrorPage from "@/components/Common/ErrorPage";
 import Loader from "@/components/Common/Loader";
 import { createBrowserRouter } from "react-router";
 import Root from "./Root";
@@ -26,7 +25,7 @@ const router = createBrowserRouter([
   },
   {
     path: "*",
-    element: <ErrorPage />,
+    lazy: () => import("@/Pages/NotFound"),
   },
 ]);
 
