@@ -27,7 +27,7 @@ const Header = () => {
           <div className="flex items-center">
             <Link to="/" className="flex items-center space-x-2">
               <div className="w-8 h-8 bg-primary-600 rounded-md flex items-center justify-center">
-                <span className="text-white font-bold">F</span>
+                <span className="text-black dark:text-white text-2xl font-bold">F</span>
               </div>
               <span className="text-xl font-bold">FinEase</span>
             </Link>

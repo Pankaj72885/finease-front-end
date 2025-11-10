@@ -1,3 +1,4 @@
+import Footer from "@/Components/Layout/Footer";
 import Header from "@/Components/Layout/Header";
 import { Outlet } from "react-router";
 
@@ -8,7 +9,7 @@ const Root = () => {
       <div className="flex-1">
         <Outlet />
       </div>
-      <footer>This is footer</footer>
+      <Footer></Footer>
     </div>
   );
 };
