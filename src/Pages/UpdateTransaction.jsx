@@ -31,7 +31,8 @@ const UpdateTransaction = () => {
             ),
           });
 
-          navigate(`/transaction/${id}`); // Navigate *after* invalidating
+          navigate(`/transaction/${id}`);
+
         },
       }
     );

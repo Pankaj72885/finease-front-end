@@ -1,20 +1,22 @@
-import { createContext, useState, useEffect, useContext } from "react";
-import { auth } from "../lib/firebase";
 import {
-  signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-  signOut,
-  onAuthStateChanged,
+  updateProfile as firebaseUpdateProfile,
   GoogleAuthProvider,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
   signInWithPopup,
-  updateProfile,
+  signOut,
 } from "firebase/auth";
+import { createContext, useContext, useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { auth } from "../lib/firebase";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isUpdatingProfile, setIsUpdatingProfile] = useState(false);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -45,7 +47,7 @@ export const AuthProvider = ({ children }) => {
       );
 
       // Update profile with name and photo
-      await updateProfile(result.user, {
+      await firebaseUpdateProfile(result.user, {
         displayName: name,
         photoURL: photoURL || null,
       });
@@ -83,6 +85,34 @@ export const AuthProvider = ({ children }) => {
     return null;
   };
 
+  const updateProfile = async (profileData) => {
+    if (!currentUser) return;
+
+    setIsUpdatingProfile(true);
+    try {
+      // Update Firebase Auth profile
+      await firebaseUpdateProfile(currentUser, {
+        displayName: profileData.displayName,
+        photoURL: profileData.photoURL,
+      });
+
+      // Manually update the local currentUser state
+      // because Firebase doesn't always trigger onAuthStateChanged for this
+      setCurrentUser((prevUser) => ({
+        ...prevUser,
+        displayName: profileData.displayName,
+        photoURL: profileData.photoURL,
+      }));
+
+      toast.success("Profile updated successfully!");
+    } catch (error) {
+      toast.error(error.message || "Failed to update profile");
+      throw error;
+    } finally {
+      setIsUpdatingProfile(false);
+    }
+  };
+
   const value = {
     currentUser,
     login,
@@ -91,6 +121,8 @@ export const AuthProvider = ({ children }) => {
     logout,
     getIdToken,
     loading,
+    updateProfile,
+    isUpdatingProfile,
   };
 
   return (

@@ -1,12 +1,13 @@
 import AddTransaction from "@/Pages/AddTransaction";
 import MyTransactions from "@/Pages/MyTransactions";
+import Profile from "@/Pages/Profile";
+import Reports from "@/Pages/Reports";
 import TransactionDetails from "@/Pages/TransactionDetails";
+import UpdateTransaction from "@/Pages/UpdateTransaction";
 import Loader from "@/components/Common/Loader";
 import PrivateRoute from "@/components/Layout/PrivateRoute";
 import { createBrowserRouter } from "react-router";
 import Root from "./Root";
-import UpdateTransaction from "@/Pages/UpdateTransaction";
-import Reports from "@/Pages/Reports";
 
 const router = createBrowserRouter([
   {
@@ -64,6 +65,14 @@ const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <Reports></Reports>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/profile",
+        element: (
+          <PrivateRoute>
+            <Profile></Profile>
           </PrivateRoute>
         ),
       },

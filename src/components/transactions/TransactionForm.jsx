@@ -79,6 +79,15 @@ const TransactionForm = ({ initialData, onSubmit, isEditing = false }) => {
       ...formData,
       amount: parseFloat(formData.amount),
     });
+    setFormData({
+      type: "Expense",
+      category: "",
+      amount: "",
+      description: "",
+      date: new Date().toISOString().split("T")[0],
+      userEmail: currentUser?.email || "",
+      userName: currentUser?.displayName || "",
+    });
   };
 
   const categories =
