@@ -1,8 +1,18 @@
+import { auth } from "./firebase";
+
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
 // Generic fetch wrapper for TanStack Query
+
 export const apiRequest = async (endpoint, options = {}) => {
-  const token = localStorage.getItem("authToken");
+  let token = null;
+  if (auth.currentUser) {
+    try {
+      token = await auth.currentUser.getIdToken();
+    } catch (error) {
+      console.error("Error getting auth token:", error);
+    }
+  }
 
   const config = {
     headers: {
@@ -22,7 +32,12 @@ export const apiRequest = async (endpoint, options = {}) => {
     throw new Error(error.message || "Something went wrong");
   }
 
-  return response.json();
+  // Handle no-content responses (like DELETE)
+  const contentType = response.headers.get("content-type");
+  if (contentType && contentType.indexOf("application/json") !== -1) {
+    return response.json();
+  }
+  return {}; // Return an empty object for 200 OK responses with no body
 };
 
 // Auth API

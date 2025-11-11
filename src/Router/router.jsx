@@ -1,6 +1,8 @@
 import Loader from "@/components/Common/Loader";
 import { createBrowserRouter } from "react-router";
 import Root from "./Root";
+import MyTransactions from "@/Pages/MyTransactions";
+import AddTransaction from "@/Pages/AddTransaction";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +22,14 @@ const router = createBrowserRouter([
       {
         path: "/login",
         lazy: () => import("@/Pages/Login"),
+      },
+      {
+        path: "/my-transactions",
+        Component: MyTransactions,
+      },
+      {
+        path: "/add-transaction",
+        Component: AddTransaction,
       },
     ],
   },
