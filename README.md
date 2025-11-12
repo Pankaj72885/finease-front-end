@@ -1,16 +1,115 @@
-# React + Vite
+# 💰 FinEase - Personal Finance Management App (Frontend)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+FinEase is a modern **personal finance management web app** that helps users manage income, expenses, and savings goals with a clean, responsive dashboard and insightful data visualizations.
 
-Currently, two official plugins are available:
+🌐 **Live Demo:** [https://finease-font-end.vercel.app/](https://finease-font-end.vercel.app/)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## 🚀 Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- 🔐 **Authentication System**
+  - Email/Password & Google Login (Firebase)
+  - Protected routes & profile management
 
-## Expanding the ESLint configuration
+- 💸 **Transaction Management (CRUD)**
+  - Add, edit, delete, and view income/expense transactions
+  - Category-based filtering and sorting
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- 📊 **Financial Reports**
+  - Interactive Pie & Bar charts using **Recharts**
+  - Monthly summaries and category-wise spending
+
+- 🌗 **Modern UI/UX**
+  - Built with **TailwindCSS** + **shadcn/ui**
+  - Light/Dark mode with Theme Context
+  - Fully responsive (mobile → desktop)
+
+- 🧭 **Routing**
+  - React Router v7.x for seamless SPA navigation
+
+---
+
+## 🏗️ Tech Stack
+
+| Layer | Technology |
+|-------|-------------|
+| Framework | React 19.x (Vite) |
+| Styling | TailwindCSS + shadcn/ui |
+| Authentication | Firebase SDK |
+| State Management | TanStack Query (React Query) |
+| Charts | Recharts |
+| Utilities | date-fns, react-hot-toast, SweetAlert2 |
+| Deployment | Vercel |
+
+---
+
+## ⚙️ Environment Variables
+
+Create a `.env` file in the root directory:
+
+```env
+VITE_FIREBASE_API_KEY=your_api_key
+VITE_FIREBASE_AUTH_DOMAIN=your_auth_domain
+VITE_FIREBASE_PROJECT_ID=your_project_id
+VITE_FIREBASE_STORAGE_BUCKET=your_storage_bucket
+VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+VITE_FIREBASE_APP_ID=your_app_id
+VITE_API_URL=https://finease-back-end.vercel.app/api
+```
+
+---
+
+## 🧩 Project Structure
+
+```
+src/
+ ┣ components/
+ ┣ contexts/
+ ┣ pages/
+ ┣ hooks/
+ ┣ routes/
+ ┗ App.jsx
+```
+
+---
+
+## 🧪 Local Setup
+
+```bash
+# 1️⃣ Clone repo
+git clone https://github.com/Pankaj72885/finease-font-end.git
+
+# 2️⃣ Install dependencies
+npm install
+
+# 3️⃣ Start dev server
+npm run dev
+```
+
+Access the app at:  
+👉 [http://localhost:5173](http://localhost:5173)
+
+---
+
+## 🔗 Related
+
+Backend Repository → [FinEase Backend](https://github.com/Pankaj72885/finease-back-end)
+
+---
+
+## 📄 License
+
+This project is open source and available under the [MIT License](LICENSE).
+
+---
+
+### 🧠 Author
+**Pankaj Bepari**
+
+-   **GitHub:** [@Pankaj72885](https://github.com/Pankaj72885)
+-   **LinkedIn:** [Pankaj Bepari](bd.linkedin.com/in/pankaj-bepari-8aa69013a)
+
+## License
+
+This project is licensed under the MIT License. See the `LICENSE` file for more details.
