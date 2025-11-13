@@ -85,7 +85,7 @@ const Header = () => {
                     />
                   ) : (
                     <div className="w-8 h-8 bg-primary-600 rounded-full flex items-center justify-center">
-                      <User size={16} className="text-white" />
+                      <User size={16} className="dark:text-white" />
                     </div>
                   )}
                 </button>
