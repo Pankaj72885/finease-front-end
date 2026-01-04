@@ -47,6 +47,13 @@ Built with React 19, Node.js/Express, and MongoDB, this project showcases:
 - **View Details** - Complete transaction information display
 - **Smart Categorization** - Pre-defined categories with emoji icons
 
+### 📝 Community Blog & Insights
+
+- **Public Blog Hub** - Read financial articles from the community
+- **Rich Authoring** - Create and edit posts with ease
+- **Dashboard Integration** - Manage your published articles under "My Blogs"
+- **Responsive Reading Mode** - Optimized layout for long-form content
+
 ### 📊 Analytics & Reports Dashboard
 
 - **Summary Cards** - Income, expenses, balance at a glance
@@ -243,6 +250,16 @@ rollupOptions: {
 @import "tailwindcss";
 ```
 
+#### 6. **Dual-Mode Blog Architecture**
+
+**Problem:** Integrating a public content platform (Blog) alongside a private management system (Dashboard) within the same SPA.
+
+**Solution:** Designed a split routing strategy:
+
+- **Public Routes:** `/blog/*` accessible to all, using `publicApiRequest`.
+- **Private Routes:** `/dashboard/my-blogs` protected by `PrivateRoute` and verified tokens.
+- **Shared Hooks:** Implemented `useBlogs` hook that conditionally switches fetch strategies based on context.
+
 ---
 
 ### Backend Challenges
@@ -377,6 +394,7 @@ finease-font-end/
 │   ├── Hooks/                # Custom hooks (useTransactions, useDebounce)
 │   ├── Pages/
 │   │   ├── Dashboard/        # Dashboard overview
+│   │   ├── Blog/             # Blog public pages
 │   │   └── *.jsx             # Page components
 │   ├── Router/               # Route definitions
 │   ├── lib/                  # Utilities, API, constants
