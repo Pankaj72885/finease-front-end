@@ -1,10 +1,16 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/Contexts/AuthContext";
-import { Chrome, Eye, EyeOff, Lock, Mail, Sparkles } from "lucide-react";
+import { Chrome, Eye, EyeOff, Lock, Mail, Sparkles, User } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { Link, useLocation, useNavigate } from "react-router";
+
+// Demo credentials - for testing purposes
+const DEMO_USER = {
+  email: "demo@finease.com",
+  password: "Demo@123",
+};
 
 export function Component() {
   const [formData, setFormData] = useState({
@@ -60,6 +66,15 @@ export function Component() {
     }
   };
 
+  // Fill demo credentials
+  const handleDemoLogin = () => {
+    setFormData({
+      email: DEMO_USER.email,
+      password: DEMO_USER.password,
+    });
+    toast.success("Demo credentials filled! Click Sign In to continue.");
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-mesh relative overflow-hidden pt-20">
       {/* Background Effects */}
@@ -87,6 +102,25 @@ export function Component() {
 
           {/* Form Card */}
           <div className="card-base p-8 shadow-xl">
+            {/* Demo User Button */}
+            <button
+              type="button"
+              onClick={handleDemoLogin}
+              className="w-full mb-6 p-4 rounded-xl border-2 border-dashed border-primary/30 bg-primary/5 hover:bg-primary/10 transition-all group"
+            >
+              <div className="flex items-center justify-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                  <User size={20} className="text-primary" />
+                </div>
+                <div className="text-left">
+                  <p className="font-medium text-sm">Try Demo Account</p>
+                  <p className="text-xs text-muted-foreground">
+                    Click to auto-fill demo credentials
+                  </p>
+                </div>
+              </div>
+            </button>
+
             <form className="space-y-5" onSubmit={handleSubmit}>
               {/* Email */}
               <div>
@@ -143,6 +177,9 @@ export function Component() {
                     type="button"
                     className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
                     onClick={() => setShowPassword(!showPassword)}
+                    aria-label={
+                      showPassword ? "Hide password" : "Show password"
+                    }
                   >
                     {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                   </button>

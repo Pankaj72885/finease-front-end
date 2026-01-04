@@ -74,19 +74,25 @@ const Header = () => {
   // Dashboard dropdown items (for logged-in users)
   const dashboardLinks = [
     {
-      to: "/my-transactions",
+      to: "/dashboard",
+      label: "Dashboard Overview",
+      icon: LayoutDashboard,
+      description: "View your financial summary",
+    },
+    {
+      to: "/dashboard/transactions",
       label: "All Transactions",
       icon: FileText,
       description: "View your transaction history",
     },
     {
-      to: "/add-transaction",
+      to: "/dashboard/add-transaction",
       label: "Add Transaction",
       icon: Plus,
       description: "Record new income or expense",
     },
     {
-      to: "/reports",
+      to: "/dashboard/reports",
       label: "Reports & Analytics",
       icon: BarChart3,
       description: "Visualize your financial data",
@@ -279,15 +285,7 @@ const Header = () => {
                     {/* Menu Items */}
                     <div className="p-2">
                       <Link
-                        to="/profile"
-                        onClick={() => setIsProfileOpen(false)}
-                        className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-muted transition-colors"
-                      >
-                        <Settings size={18} className="text-muted-foreground" />
-                        <span>Account Settings</span>
-                      </Link>
-                      <Link
-                        to="/my-transactions"
+                        to="/dashboard"
                         onClick={() => setIsProfileOpen(false)}
                         className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-muted transition-colors"
                       >
@@ -296,6 +294,14 @@ const Header = () => {
                           className="text-muted-foreground"
                         />
                         <span>My Dashboard</span>
+                      </Link>
+                      <Link
+                        to="/dashboard/profile"
+                        onClick={() => setIsProfileOpen(false)}
+                        className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-muted transition-colors"
+                      >
+                        <Settings size={18} className="text-muted-foreground" />
+                        <span>Account Settings</span>
                       </Link>
                     </div>
 

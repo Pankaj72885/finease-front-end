@@ -1,15 +1,18 @@
 import AddTransaction from "@/Pages/AddTransaction";
+import DashboardOverview from "@/Pages/Dashboard/DashboardOverview";
 import MyTransactions from "@/Pages/MyTransactions";
 import Profile from "@/Pages/Profile";
 import Reports from "@/Pages/Reports";
 import TransactionDetails from "@/Pages/TransactionDetails";
 import UpdateTransaction from "@/Pages/UpdateTransaction";
 import Loader from "@/components/Common/Loader";
+import DashboardLayout from "@/components/Layout/DashboardLayout";
 import PrivateRoute from "@/components/Layout/PrivateRoute";
 import { createBrowserRouter } from "react-router";
 import Root from "./Root";
 
 const router = createBrowserRouter([
+  // ============ PUBLIC LAYOUT (Root) ============
   {
     path: "/",
     Component: Root,
@@ -67,12 +70,13 @@ const router = createBrowserRouter([
         lazy: () => import("@/Pages/ForgotPassword"),
       },
 
-      // ============ PRIVATE ROUTES ============
+      // ============ LEGACY PRIVATE ROUTES (with Root layout) ============
+      // Keep these for backwards compatibility / direct links
       {
         path: "/my-transactions",
         element: (
           <PrivateRoute>
-            <MyTransactions></MyTransactions>
+            <MyTransactions />
           </PrivateRoute>
         ),
       },
@@ -80,7 +84,7 @@ const router = createBrowserRouter([
         path: "/add-transaction",
         element: (
           <PrivateRoute>
-            <AddTransaction></AddTransaction>
+            <AddTransaction />
           </PrivateRoute>
         ),
       },
@@ -88,7 +92,7 @@ const router = createBrowserRouter([
         path: "/transaction/:id",
         element: (
           <PrivateRoute>
-            <TransactionDetails></TransactionDetails>
+            <TransactionDetails />
           </PrivateRoute>
         ),
       },
@@ -96,7 +100,7 @@ const router = createBrowserRouter([
         path: "/update-transaction/:id",
         element: (
           <PrivateRoute>
-            <UpdateTransaction></UpdateTransaction>
+            <UpdateTransaction />
           </PrivateRoute>
         ),
       },
@@ -104,7 +108,7 @@ const router = createBrowserRouter([
         path: "/reports",
         element: (
           <PrivateRoute>
-            <Reports></Reports>
+            <Reports />
           </PrivateRoute>
         ),
       },
@@ -112,12 +116,55 @@ const router = createBrowserRouter([
         path: "/profile",
         element: (
           <PrivateRoute>
-            <Profile></Profile>
+            <Profile />
           </PrivateRoute>
         ),
       },
     ],
   },
+
+  // ============ DASHBOARD LAYOUT ============
+  {
+    path: "/dashboard",
+    element: (
+      <PrivateRoute>
+        <DashboardLayout />
+      </PrivateRoute>
+    ),
+    hydrateFallbackElement: <Loader />,
+    children: [
+      {
+        index: true,
+        element: <DashboardOverview />,
+      },
+      {
+        path: "transactions",
+        element: <MyTransactions />,
+      },
+      {
+        path: "add-transaction",
+        element: <AddTransaction />,
+      },
+      {
+        path: "transaction/:id",
+        element: <TransactionDetails />,
+      },
+      {
+        path: "update-transaction/:id",
+        element: <UpdateTransaction />,
+      },
+      {
+        path: "reports",
+        element: <Reports />,
+      },
+      {
+        path: "profile",
+        element: <Profile />,
+      },
+    ],
+  },
+
+  // ============ 404 ============
   {
     path: "*",
     lazy: () => import("@/Pages/NotFound"),
