@@ -7,6 +7,7 @@ import {
   ChevronDown,
   FileText,
   Home,
+  LayoutDashboard,
   LogOut,
   Menu,
   Moon,
@@ -41,7 +42,7 @@ const DashboardLayout = () => {
     {
       to: "/dashboard",
       label: "Overview",
-      icon: Home,
+      icon: LayoutDashboard,
       end: true,
     },
     {
@@ -68,6 +69,11 @@ const DashboardLayout = () => {
       to: "/dashboard/profile",
       label: "Profile",
       icon: Settings,
+    },
+    {
+      to: "/",
+      label: "Back to Home",
+      icon: Home,
     },
   ];
 
