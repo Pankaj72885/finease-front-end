@@ -1,15 +1,20 @@
+import EmptyState from "@/components/Common/EmptyState";
+import {
+  SummaryCardSkeleton,
+  TransactionCardSkeleton,
+} from "@/components/Common/Skeleton";
 import TransactionCard from "@/components/transactions/TransactionCard";
 import { Button } from "@/components/ui/button";
-import { Spinner } from "@/components/ui/spinner";
 import { useAuth } from "@/Contexts/AuthContext";
 import { useTransactions } from "@/Hooks/useTransactions";
 import {
   ArrowDown,
   ArrowUp,
   ArrowUpDown,
-  Filter,
+  FileText,
   LayoutDashboard,
   Plus,
+  Search,
   TrendingDown,
   TrendingUp,
   Wallet,
@@ -23,6 +28,7 @@ const MyTransactions = () => {
   const navigate = useNavigate();
   const [sortBy, setSortBy] = useState("createdAt");
   const [sortOrder, setSortOrder] = useState("desc");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const { transactions, isLoading, deleteTransaction } = useTransactions(
     currentUser?.email,
@@ -30,15 +36,26 @@ const MyTransactions = () => {
     sortOrder
   );
 
+  // Filter transactions by search query
+  const filteredTransactions = transactions?.filter((t) => {
+    if (!searchQuery) return true;
+    const query = searchQuery.toLowerCase();
+    return (
+      t.category?.toLowerCase().includes(query) ||
+      t.description?.toLowerCase().includes(query) ||
+      t.type?.toLowerCase().includes(query)
+    );
+  });
+
   // Calculate summary stats
   const totalIncome =
     transactions
-      ?.filter((t) => t.type === "income")
+      ?.filter((t) => t.type?.toLowerCase() === "income")
       .reduce((sum, t) => sum + t.amount, 0) || 0;
 
   const totalExpense =
     transactions
-      ?.filter((t) => t.type === "expense")
+      ?.filter((t) => t.type?.toLowerCase() === "expense")
       .reduce((sum, t) => sum + t.amount, 0) || 0;
 
   const balance = totalIncome - totalExpense;
@@ -54,19 +71,25 @@ const MyTransactions = () => {
 
   const handleDelete = (id) => {
     Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
+      title: "Delete Transaction?",
+      text: "This action cannot be undone.",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#7c3aed",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
+      cancelButtonColor: "#6b7280",
+      confirmButtonText: "Yes, delete it",
+      cancelButtonText: "Cancel",
       background: document.documentElement.classList.contains("dark")
         ? "#1f2937"
         : "#ffffff",
       color: document.documentElement.classList.contains("dark")
         ? "#f3f4f6"
         : "#1f2937",
+      customClass: {
+        popup: "rounded-2xl",
+        confirmButton: "rounded-xl",
+        cancelButton: "rounded-xl",
+      },
     }).then((result) => {
       if (result.isConfirmed) {
         deleteTransaction(id);
@@ -81,6 +104,7 @@ const MyTransactions = () => {
     return (
       <button
         onClick={() => handleSort(field)}
+        aria-label={`Sort by ${label}`}
         className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-medium transition-all ${
           isActive
             ? "bg-primary text-primary-foreground shadow-sm"
@@ -122,90 +146,128 @@ const MyTransactions = () => {
         </div>
 
         {/* Summary Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-          <div className="card-base p-5 flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-green-500/10 flex items-center justify-center">
-              <TrendingUp className="text-green-500" size={24} />
+        {isLoading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+            <SummaryCardSkeleton />
+            <SummaryCardSkeleton />
+            <SummaryCardSkeleton />
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+            <div className="card-base p-5 flex items-center gap-4">
+              <div className="w-12 h-12 rounded-xl bg-green-500/10 flex items-center justify-center">
+                <TrendingUp className="text-green-500" size={24} />
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground">Total Income</p>
+                <p className="text-xl font-bold text-green-500">
+                  ${totalIncome.toLocaleString()}
+                </p>
+              </div>
             </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Total Income</p>
-              <p className="text-xl font-bold text-green-500">
-                ${totalIncome.toLocaleString()}
-              </p>
+
+            <div className="card-base p-5 flex items-center gap-4">
+              <div className="w-12 h-12 rounded-xl bg-red-500/10 flex items-center justify-center">
+                <TrendingDown className="text-red-500" size={24} />
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground">Total Expenses</p>
+                <p className="text-xl font-bold text-red-500">
+                  ${totalExpense.toLocaleString()}
+                </p>
+              </div>
+            </div>
+
+            <div className="card-base p-5 flex items-center gap-4">
+              <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
+                <Wallet className="text-primary" size={24} />
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground">Balance</p>
+                <p
+                  className={`text-xl font-bold ${
+                    balance >= 0 ? "text-green-500" : "text-red-500"
+                  }`}
+                >
+                  ${Math.abs(balance).toLocaleString()}
+                  {balance < 0 && " (deficit)"}
+                </p>
+              </div>
             </div>
           </div>
+        )}
 
-          <div className="card-base p-5 flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-red-500/10 flex items-center justify-center">
-              <TrendingDown className="text-red-500" size={24} />
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Total Expenses</p>
-              <p className="text-xl font-bold text-red-500">
-                ${totalExpense.toLocaleString()}
-              </p>
-            </div>
+        {/* Search & Sort Controls */}
+        <div className="flex flex-col sm:flex-row gap-4 mb-6">
+          {/* Search */}
+          <div className="relative flex-1 max-w-md">
+            <Search
+              size={18}
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground"
+            />
+            <input
+              type="text"
+              placeholder="Search transactions..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-11 pr-4 py-2.5 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+              aria-label="Search transactions"
+            />
           </div>
 
-          <div className="card-base p-5 flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-              <Wallet className="text-primary" size={24} />
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Balance</p>
-              <p
-                className={`text-xl font-bold ${
-                  balance >= 0 ? "text-green-500" : "text-red-500"
-                }`}
-              >
-                ${Math.abs(balance).toLocaleString()}
-                {balance < 0 && " (deficit)"}
-              </p>
-            </div>
+          {/* Sort Buttons */}
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-sm text-muted-foreground mr-1">Sort:</span>
+            <SortButton field="date" label="Date" />
+            <SortButton field="amount" label="Amount" />
+            <SortButton field="category" label="Category" />
           </div>
-        </div>
-
-        {/* Sort Controls */}
-        <div className="flex flex-wrap items-center gap-2 mb-6">
-          <span className="text-sm text-muted-foreground mr-2">Sort by:</span>
-          <SortButton field="date" label="Date" />
-          <SortButton field="amount" label="Amount" />
-          <SortButton field="category" label="Category" />
         </div>
 
         {/* Transactions Grid */}
         {isLoading ? (
-          <div className="flex justify-center py-20">
-            <Spinner size="lg" />
-          </div>
-        ) : transactions?.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {transactions.map((transaction) => (
-              <TransactionCard
-                key={transaction._id}
-                transaction={transaction}
-                onView={(id) => navigate(`/transaction/${id}`)}
-                onEdit={(id) => navigate(`/update-transaction/${id}`)}
-                onDelete={handleDelete}
-              />
+            {[...Array(6)].map((_, i) => (
+              <TransactionCardSkeleton key={i} />
             ))}
           </div>
-        ) : (
-          <div className="text-center py-20">
-            <div className="w-20 h-20 rounded-full bg-muted flex items-center justify-center mx-auto mb-6">
-              <Filter size={32} className="text-muted-foreground" />
-            </div>
-            <h3 className="text-xl font-semibold mb-2">No transactions yet</h3>
-            <p className="text-muted-foreground mb-6 max-w-sm mx-auto">
-              Start tracking your finances by adding your first transaction
+        ) : filteredTransactions?.length > 0 ? (
+          <>
+            {/* Results count */}
+            <p className="text-sm text-muted-foreground mb-4">
+              Showing {filteredTransactions.length} of {transactions?.length}{" "}
+              transactions
             </p>
-            <Link to="/add-transaction">
-              <Button className="rounded-xl bg-gradient-primary hover:opacity-90">
-                <Plus size={18} />
-                Add Your First Transaction
-              </Button>
-            </Link>
-          </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredTransactions.map((transaction) => (
+                <TransactionCard
+                  key={transaction._id}
+                  transaction={transaction}
+                  onView={(id) => navigate(`/transaction/${id}`)}
+                  onEdit={(id) => navigate(`/update-transaction/${id}`)}
+                  onDelete={handleDelete}
+                />
+              ))}
+            </div>
+          </>
+        ) : searchQuery ? (
+          // No results from search
+          <EmptyState
+            icon={Search}
+            title="No matching transactions"
+            description={`No transactions found matching "${searchQuery}". Try a different search term.`}
+            actionLabel="Clear Search"
+            onAction={() => setSearchQuery("")}
+          />
+        ) : (
+          // Empty state - no transactions at all
+          <EmptyState
+            icon={FileText}
+            title="No transactions yet"
+            description="Start tracking your finances by adding your first transaction. It only takes a few seconds!"
+            actionLabel="Add Your First Transaction"
+            actionLink="/add-transaction"
+          />
         )}
       </div>
     </div>

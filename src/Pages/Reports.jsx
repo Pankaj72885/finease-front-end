@@ -1,6 +1,11 @@
+import {
+  ChartSkeleton,
+  SummaryCardSkeleton,
+} from "@/components/Common/Skeleton";
 import CategoryChart from "@/components/reports/CategoryChart";
 import MonthlyChart from "@/components/reports/MonthlyChart";
 import SummaryCards from "@/components/reports/SummaryCards";
+import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -10,7 +15,13 @@ import {
 } from "@/components/ui/select";
 import { useAuth } from "@/Contexts/AuthContext";
 import { useMonthlyData, useReports } from "@/Hooks/useReports";
-import { BarChart3, Calendar, TrendingUp } from "lucide-react";
+import {
+  BarChart3,
+  Calendar,
+  Download,
+  PieChart,
+  TrendingUp,
+} from "lucide-react";
 import { useState } from "react";
 
 const Reports = () => {
@@ -18,7 +29,7 @@ const Reports = () => {
   const currentYear = new Date().getFullYear();
   const [selectedYear, setSelectedYear] = useState(currentYear.toString());
 
-  const { summary, categoryData } = useReports(currentUser?.email);
+  const { summary, categoryData, isLoading } = useReports(currentUser?.email);
   const { monthlyData, isLoading: monthlyLoading } = useMonthlyData(
     currentUser?.email,
     selectedYear
@@ -46,50 +57,148 @@ const Reports = () => {
             </p>
           </div>
 
-          {/* Year Filter */}
-          <div className="flex items-center gap-3 p-4 rounded-xl bg-card border border-border">
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <Calendar size={18} />
-              <span className="text-sm font-medium">Year:</span>
+          {/* Controls */}
+          <div className="flex items-center gap-3">
+            {/* Year Filter */}
+            <div className="flex items-center gap-3 p-3 rounded-xl bg-card border border-border">
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <Calendar size={18} />
+                <span className="text-sm font-medium hidden sm:inline">
+                  Year:
+                </span>
+              </div>
+              <Select value={selectedYear} onValueChange={setSelectedYear}>
+                <SelectTrigger
+                  className="w-[100px] rounded-xl"
+                  aria-label="Select year"
+                >
+                  <SelectValue placeholder="Select year" />
+                </SelectTrigger>
+                <SelectContent>
+                  {years.map((year) => (
+                    <SelectItem key={year} value={year}>
+                      {year}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
-            <Select value={selectedYear} onValueChange={setSelectedYear}>
-              <SelectTrigger className="w-[120px] rounded-xl">
-                <SelectValue placeholder="Select year" />
-              </SelectTrigger>
-              <SelectContent>
-                {years.map((year) => (
-                  <SelectItem key={year} value={year}>
-                    {year}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+
+            {/* Export Button (Future Feature) */}
+            <Button
+              variant="outline"
+              className="rounded-xl"
+              disabled
+              title="Coming soon"
+              aria-label="Export report"
+            >
+              <Download size={18} />
+              <span className="hidden sm:inline">Export</span>
+            </Button>
           </div>
         </div>
 
         {/* Summary Cards */}
         <div className="mb-8">
-          <SummaryCards summary={summary} />
+          {isLoading ? (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <SummaryCardSkeleton />
+              <SummaryCardSkeleton />
+              <SummaryCardSkeleton />
+            </div>
+          ) : (
+            <SummaryCards summary={summary} />
+          )}
         </div>
 
-        {/* Charts Section */}
-        <div className="mb-6">
-          <div className="flex items-center gap-2 mb-4">
+        {/* Charts Section Header */}
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-2">
             <TrendingUp size={20} className="text-primary" />
             <h2 className="text-xl font-semibold font-outfit">
               Detailed Breakdown
             </h2>
           </div>
+          <span className="text-sm text-muted-foreground">
+            Data for {selectedYear}
+          </span>
         </div>
 
+        {/* Charts Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Category Chart */}
           <div className="card-base p-6">
-            <h3 className="text-lg font-semibold mb-4">By Category</h3>
-            <CategoryChart data={categoryData} />
+            <div className="flex items-center gap-2 mb-4">
+              <PieChart size={20} className="text-secondary" />
+              <h3 className="text-lg font-semibold">Expense by Category</h3>
+            </div>
+            {isLoading ? (
+              <ChartSkeleton />
+            ) : (
+              <CategoryChart data={categoryData} />
+            )}
           </div>
+
+          {/* Monthly Chart */}
           <div className="card-base p-6">
-            <h3 className="text-lg font-semibold mb-4">Monthly Trend</h3>
-            <MonthlyChart data={monthlyData} isLoading={monthlyLoading} />
+            <div className="flex items-center gap-2 mb-4">
+              <BarChart3 size={20} className="text-primary" />
+              <h3 className="text-lg font-semibold">Monthly Trend</h3>
+            </div>
+            {monthlyLoading ? (
+              <ChartSkeleton />
+            ) : (
+              <MonthlyChart data={monthlyData} isLoading={monthlyLoading} />
+            )}
+          </div>
+        </div>
+
+        {/* Insights Section */}
+        <div className="mt-8 card-base p-6 bg-gradient-to-br from-primary/5 to-secondary/5">
+          <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+            <span className="text-2xl">💡</span>
+            Quick Insights
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="p-4 rounded-xl bg-background border border-border">
+              <p className="text-sm text-muted-foreground mb-1">
+                Highest Expense Category
+              </p>
+              <p className="font-semibold">
+                {categoryData
+                  ? Object.entries(categoryData)
+                      .filter(([, v]) => v.expense > 0)
+                      .sort((a, b) => b[1].expense - a[1].expense)[0]?.[0] ||
+                    "No data"
+                  : "Loading..."}
+              </p>
+            </div>
+            <div className="p-4 rounded-xl bg-background border border-border">
+              <p className="text-sm text-muted-foreground mb-1">
+                Average Monthly Expense
+              </p>
+              <p className="font-semibold">
+                $
+                {monthlyData
+                  ? (
+                      monthlyData.reduce((sum, m) => sum + m.expense, 0) /
+                      (monthlyData.filter((m) => m.expense > 0).length || 1)
+                    ).toLocaleString(undefined, { maximumFractionDigits: 0 })
+                  : "0"}
+              </p>
+            </div>
+            <div className="p-4 rounded-xl bg-background border border-border">
+              <p className="text-sm text-muted-foreground mb-1">Savings Rate</p>
+              <p className="font-semibold">
+                {summary?.totalIncome > 0
+                  ? `${Math.round(
+                      ((summary.totalIncome - summary.totalExpense) /
+                        summary.totalIncome) *
+                        100
+                    )}%`
+                  : "N/A"}
+              </p>
+            </div>
           </div>
         </div>
       </div>
