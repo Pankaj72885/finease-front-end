@@ -162,7 +162,7 @@ const TransactionDetails = () => {
               <h1 className="text-2xl font-bold font-outfit">{category}</h1>
             </div>
             <div className="flex gap-2">
-              <Link to={`/update-transaction/${id}`}>
+              <Link to={`/dashboard/update-transaction/${id}`}>
                 <Button variant="outline" className="rounded-xl">
                   <Edit size={16} />
                   Edit

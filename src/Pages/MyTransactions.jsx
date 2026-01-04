@@ -283,8 +283,10 @@ const MyTransactions = () => {
                 <TransactionCard
                   key={transaction._id}
                   transaction={transaction}
-                  onView={(id) => navigate(`/transaction/${id}`)}
-                  onEdit={(id) => navigate(`/update-transaction/${id}`)}
+                  onView={(id) => navigate(`/dashboard/transaction/${id}`)}
+                  onEdit={(id) =>
+                    navigate(`/dashboard/update-transaction/${id}`)
+                  }
                   onDelete={handleDelete}
                 />
               ))}
