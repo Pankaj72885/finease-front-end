@@ -4,6 +4,7 @@ import { useAuth } from "@/Contexts/AuthContext";
 import { useTheme } from "@/Contexts/ThemeContext";
 import {
   BarChart3,
+  BookOpen,
   ChevronDown,
   FileText,
   LayoutDashboard,
@@ -98,6 +99,12 @@ const Header = () => {
       icon: BarChart3,
       description: "Visualize your financial data",
     },
+    {
+      to: "/dashboard/my-blogs",
+      label: "My Blogs",
+      icon: BookOpen,
+      description: "Manage your articles",
+    },
   ];
 
   const navLinkClass = ({ isActive }) =>
@@ -155,7 +162,7 @@ const Header = () => {
                 {isDashboardOpen && (
                   <div className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-72 bg-card border border-border rounded-2xl shadow-xl overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
                     {/* Header */}
-                    <div className="px-4 py-3 bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10 border-b border-border">
+                    <div className="px-4 py-3 bg-linear-to-r from-primary/10 via-secondary/10 to-accent/10 border-b border-border">
                       <p className="text-sm font-semibold flex items-center gap-2">
                         <Wallet size={16} className="text-primary" />
                         Financial Dashboard
@@ -255,7 +262,7 @@ const Header = () => {
                 {isProfileOpen && (
                   <div className="absolute right-0 mt-2 w-72 bg-card border border-border rounded-2xl shadow-xl overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
                     {/* User Info */}
-                    <div className="p-4 bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10 border-b border-border">
+                    <div className="p-4 bg-linear-to-r from-primary/10 via-secondary/10 to-accent/10 border-b border-border">
                       <div className="flex items-center gap-3">
                         {currentUser.photoURL ? (
                           <img
@@ -359,7 +366,7 @@ const Header = () => {
             <nav className="flex flex-col gap-1">
               {currentUser && (
                 // Logged in: User Info Card
-                <div className="flex items-center gap-3 px-4 py-3 mb-3 bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10 rounded-xl">
+                <div className="flex items-center gap-3 px-4 py-3 mb-3 bg-linear-to-r from-primary/10 via-secondary/10 to-accent/10 rounded-xl">
                   {currentUser.photoURL ? (
                     <img
                       src={currentUser.photoURL}
