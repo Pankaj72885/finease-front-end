@@ -1,5 +1,5 @@
 import { useBlogs } from "@/Hooks/useBlogs";
-import { ArrowRight, Calendar, User } from "lucide-react";
+import { ArrowRight, BookOpen, Calendar, User } from "lucide-react";
 import { Link } from "react-router";
 
 export default function BlogList() {
@@ -13,7 +13,7 @@ export default function BlogList() {
 
       <div className="container-wide">
         <div className="text-center max-w-2xl mx-auto mb-16 animate-in fade-in slide-in-from-bottom-4 duration-700">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6 font-outfit bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">
+          <h1 className="text-4xl md:text-5xl font-bold mb-6 font-outfit bg-clip-text text-transparent bg-linear-to-r from-primary to-secondary">
             Latest Insights
           </h1>
           <p className="text-muted-foreground text-lg">
@@ -37,7 +37,7 @@ export default function BlogList() {
               <Link
                 key={blog._id}
                 to={`/blog/${blog._id}`}
-                className="group bg-card border border-border rounded-2xl overflow-hidden hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 flex flex-col h-full animate-in fade-in zoom-in-50 duration-500"
+                className="group bg-card border border-border rounded-2xl overflow-hidden hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 flex flex-col h-full animate-in fade-in zoom-in-50"
               >
                 {/* Image */}
                 <div className="h-52 overflow-hidden relative">
@@ -88,6 +88,17 @@ export default function BlogList() {
                 </div>
               </Link>
             ))}
+          </div>
+        ) : (
+          <div className="text-center py-20 animate-in fade-in zoom-in-50">
+            <div className="w-20 h-20 bg-muted/30 rounded-full flex items-center justify-center mx-auto mb-6">
+              <BookOpen size={40} className="text-muted-foreground/50" />
+            </div>
+            <h3 className="text-2xl font-bold mb-3">No Insights Yet</h3>
+            <p className="text-muted-foreground max-w-md mx-auto">
+              We haven't published any articles yet. Check back soon for fresh
+              financial tips and strategies.
+            </p>
           </div>
         )}
       </div>
