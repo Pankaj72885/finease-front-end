@@ -1,3 +1,4 @@
+import Logo from "@/components/Common/Logo";
 import { useAuth } from "@/Contexts/AuthContext";
 import { useTheme } from "@/Contexts/ThemeContext";
 import {
@@ -88,15 +89,9 @@ const DashboardLayout = () => {
             </button>
 
             {/* Logo */}
-            <Link to="/" className="flex items-center gap-2">
-              <div className="w-9 h-9 rounded-xl bg-gradient-primary flex items-center justify-center">
-                <span className="text-white text-lg font-bold font-outfit">
-                  F
-                </span>
-              </div>
-              <span className="text-lg font-bold font-outfit hidden sm:block">
-                FinEase
-              </span>
+            {/* Logo */}
+            <Link to="/" className="hover:opacity-90 transition-opacity">
+              <Logo size="sm" />
             </Link>
           </div>
 

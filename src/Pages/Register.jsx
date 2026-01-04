@@ -1,3 +1,4 @@
+import Logo from "@/components/Common/Logo";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/Contexts/AuthContext";
@@ -121,12 +122,11 @@ export function Component() {
         <div className="max-w-md mx-auto">
           {/* Header */}
           <div className="text-center mb-8">
-            <Link to="/" className="inline-flex items-center gap-2 mb-6">
-              <div className="w-12 h-12 rounded-xl bg-gradient-primary flex items-center justify-center shadow-glow-sm">
-                <span className="text-white text-2xl font-bold font-outfit">
-                  F
-                </span>
-              </div>
+            <Link
+              to="/"
+              className="inline-flex items-center gap-2 mb-6 hover:opacity-90 transition-opacity"
+            >
+              <Logo size="lg" showText={false} />
             </Link>
             <h1 className="text-3xl font-bold font-outfit mb-2">
               Create Account

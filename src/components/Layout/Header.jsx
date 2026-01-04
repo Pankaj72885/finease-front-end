@@ -115,13 +115,9 @@ const Header = () => {
       <div className="container-wide">
         <div className="flex justify-between items-center h-16 lg:h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 rounded-xl bg-gradient-primary flex items-center justify-center shadow-glow-sm group-hover:shadow-glow transition-shadow">
-              <span className="text-white text-xl font-bold font-outfit">
-                F
-              </span>
-            </div>
-            <span className="text-xl font-bold font-outfit">FinEase</span>
+          {/* Logo */}
+          <Link to="/" className="group hover:opacity-90 transition-opacity">
+            <Logo />
           </Link>
 
           {/* Desktop Navigation */}
