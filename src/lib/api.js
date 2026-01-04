@@ -1,7 +1,8 @@
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+const API_URL =
+  import.meta.env.VITE_API_URL || "https://finease-back-end.vercel.app/api";
 
 /**
  * A promise that resolves with the current auth user object
