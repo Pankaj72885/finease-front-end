@@ -1,5 +1,8 @@
+import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
+import { useAuth } from "@/Contexts/AuthContext";
 import { useTransaction, useTransactions } from "@/Hooks/useTransactions";
+import { queryKeys, transactionAPI } from "@/lib/api";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import {
@@ -7,14 +10,16 @@ import {
   Calendar,
   DollarSign,
   Edit,
+  Eye,
+  FileText,
   Tag,
   Trash2,
+  TrendingDown,
+  TrendingUp,
+  User,
 } from "lucide-react";
 import { Link, useNavigate, useParams } from "react-router";
 import Swal from "sweetalert2";
-import { queryKeys, transactionAPI } from "@/lib/api";
-import { Button } from "@/components/ui/button";
-import { useAuth } from "@/Contexts/AuthContext";
 
 const TransactionDetails = () => {
   const { id } = useParams();
@@ -43,9 +48,15 @@ const TransactionDetails = () => {
       text: "You won't be able to revert this!",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
+      confirmButtonColor: "#7c3aed",
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, delete it!",
+      background: document.documentElement.classList.contains("dark")
+        ? "#1f2937"
+        : "#ffffff",
+      color: document.documentElement.classList.contains("dark")
+        ? "#f3f4f6"
+        : "#1f2937",
     }).then((result) => {
       if (result.isConfirmed) {
         deleteTransaction(id, {
@@ -70,20 +81,30 @@ const TransactionDetails = () => {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center py-12">
-        <Spinner size="lg" />
+      <div className="pt-24 pb-12">
+        <div className="container-tight">
+          <div className="flex justify-center py-20">
+            <Spinner size="lg" />
+          </div>
+        </div>
       </div>
     );
   }
 
   if (!transaction) {
     return (
-      <div className="container mx-auto px-4 py-8">
-        <div className="text-center py-12">
-          <h3 className="text-lg font-medium mb-2">Transaction not found</h3>
+      <div className="pt-24 pb-12">
+        <div className="container-tight text-center py-20">
+          <div className="w-20 h-20 rounded-full bg-muted flex items-center justify-center mx-auto mb-6">
+            <FileText size={32} className="text-muted-foreground" />
+          </div>
+          <h3 className="text-xl font-semibold mb-2">Transaction not found</h3>
+          <p className="text-muted-foreground mb-6">
+            This transaction may have been deleted or doesn't exist
+          </p>
           <Link to="/my-transactions">
-            <Button variant="outline">
-              <ArrowLeft size={16} className="mr-2" />
+            <Button variant="outline" className="rounded-xl">
+              <ArrowLeft size={16} />
               Back to Transactions
             </Button>
           </Link>
@@ -94,104 +115,147 @@ const TransactionDetails = () => {
 
   const { type, category, amount, description, date, userEmail, userName } =
     transaction;
-  const isIncome = type === "Income";
+  const isIncome = type === "Income" || type === "income";
   const categoryTotal = calculateCategoryTotal();
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="mb-6">
-        <Link to="/my-transactions">
-          <Button variant="outline">
-            <ArrowLeft size={16} className="mr-2" />
-            Back to Transactions
-          </Button>
+    <div className="pt-24 pb-12">
+      <div className="container-tight">
+        {/* Back Link */}
+        <Link
+          to="/my-transactions"
+          className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-6"
+        >
+          <ArrowLeft size={18} />
+          Back to Transactions
         </Link>
-      </div>
 
-      <div className="bg-card border rounded-lg p-6 max-w-2xl mx-auto">
-        <div className="flex justify-between items-start mb-6">
-          <h1 className="text-2xl font-bold">Transaction Details</h1>
-          <div className="flex space-x-2">
-            <Link to={`/update-transaction/${id}`}>
-              <Button variant="outline" size="sm">
-                <Edit size={16} />
+        {/* Main Card */}
+        <div className="card-base p-6 md:p-8">
+          {/* Header */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8 pb-6 border-b border-border">
+            <div>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-2">
+                <Eye size={14} />
+                <span>Transaction Details</span>
+              </div>
+              <h1 className="text-2xl font-bold font-outfit">{category}</h1>
+            </div>
+            <div className="flex gap-2">
+              <Link to={`/update-transaction/${id}`}>
+                <Button variant="outline" className="rounded-xl">
+                  <Edit size={16} />
+                  Edit
+                </Button>
+              </Link>
+              <Button
+                variant="outline"
+                className="rounded-xl text-destructive hover:bg-destructive hover:text-destructive-foreground"
+                onClick={handleDelete}
+              >
+                <Trash2 size={16} />
+                Delete
               </Button>
-            </Link>
-            <Button variant="outline" size="sm" onClick={handleDelete}>
-              <Trash2 size={16} />
-            </Button>
-          </div>
-        </div>
-
-        <div className="space-y-4">
-          <div className="flex items-center space-x-3">
-            <div
-              className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                isIncome
-                  ? "bg-green-100 text-green-600"
-                  : "bg-red-100 text-red-600"
-              }`}
-            >
-              <Tag size={20} />
-            </div>
-            <div>
-              <h3 className="font-medium">{category}</h3>
-              <p className="text-sm text-muted-foreground">{type}</p>
             </div>
           </div>
 
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-full flex items-center justify-center bg-primary-100 text-primary-600">
-              <DollarSign size={20} />
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Amount</p>
-              <p
-                className={`text-xl font-bold ${
-                  isIncome ? "text-green-600" : "text-red-600"
+          {/* Details Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Amount */}
+            <div className="flex items-center gap-4 p-4 rounded-xl bg-muted/50">
+              <div
+                className={`w-14 h-14 rounded-xl flex items-center justify-center ${
+                  isIncome ? "bg-green-500/10" : "bg-red-500/10"
                 }`}
               >
-                {isIncome ? "+" : "-"}${amount.toFixed(2)}
-              </p>
+                {isIncome ? (
+                  <TrendingUp className="text-green-500" size={28} />
+                ) : (
+                  <TrendingDown className="text-red-500" size={28} />
+                )}
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground">Amount</p>
+                <p
+                  className={`text-2xl font-bold ${
+                    isIncome ? "text-green-500" : "text-red-500"
+                  }`}
+                >
+                  {isIncome ? "+" : "-"}${amount.toFixed(2)}
+                </p>
+              </div>
+            </div>
+
+            {/* Type */}
+            <div className="flex items-center gap-4 p-4 rounded-xl bg-muted/50">
+              <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center">
+                <Tag className="text-primary" size={28} />
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground">Type</p>
+                <p className="text-xl font-semibold capitalize">{type}</p>
+              </div>
+            </div>
+
+            {/* Category */}
+            <div className="flex items-center gap-4 p-4 rounded-xl bg-muted/50">
+              <div className="w-14 h-14 rounded-xl bg-secondary/10 flex items-center justify-center">
+                <DollarSign className="text-secondary" size={28} />
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground">Category</p>
+                <p className="text-xl font-semibold">{category}</p>
+              </div>
+            </div>
+
+            {/* Date */}
+            <div className="flex items-center gap-4 p-4 rounded-xl bg-muted/50">
+              <div className="w-14 h-14 rounded-xl bg-accent/10 flex items-center justify-center">
+                <Calendar className="text-accent" size={28} />
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground">Date</p>
+                <p className="text-xl font-semibold">
+                  {format(new Date(date), "MMM dd, yyyy")}
+                </p>
+              </div>
             </div>
           </div>
 
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-full flex items-center justify-center bg-primary-100 text-primary-600">
-              <Calendar size={20} />
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Date</p>
-              <p className="font-medium">
-                {format(new Date(date), "MMMM dd, yyyy")}
-              </p>
-            </div>
-          </div>
-
+          {/* Description */}
           {description && (
-            <div>
-              <p className="text-sm text-muted-foreground mb-1">Description</p>
+            <div className="mt-6 p-4 rounded-xl bg-muted/50">
+              <p className="text-sm text-muted-foreground mb-2">Description</p>
               <p className="font-medium">{description}</p>
             </div>
           )}
 
-          <div className="pt-4 border-t">
-            <p className="text-sm text-muted-foreground mb-1">
-              Total in this category
-            </p>
-            <p
-              className={`text-lg font-bold ${
-                isIncome ? "text-green-600" : "text-red-600"
-              }`}
-            >
-              ${categoryTotal.toFixed(2)}
-            </p>
-          </div>
+          {/* Footer Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8 pt-6 border-t border-border">
+            {/* Category Total */}
+            <div className="p-4 rounded-xl border border-border">
+              <p className="text-sm text-muted-foreground mb-1">
+                Total in "{category}"
+              </p>
+              <p
+                className={`text-2xl font-bold ${
+                  isIncome ? "text-green-500" : "text-red-500"
+                }`}
+              >
+                ${categoryTotal.toFixed(2)}
+              </p>
+            </div>
 
-          <div className="pt-4 border-t">
-            <p className="text-sm text-muted-foreground mb-1">User</p>
-            <p className="font-medium">{userName}</p>
-            <p className="text-sm text-muted-foreground">{userEmail}</p>
+            {/* User Info */}
+            <div className="flex items-center gap-4 p-4 rounded-xl border border-border">
+              <div className="w-12 h-12 rounded-xl bg-muted flex items-center justify-center">
+                <User className="text-muted-foreground" size={24} />
+              </div>
+              <div>
+                <p className="font-medium">{userName}</p>
+                <p className="text-sm text-muted-foreground">{userEmail}</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>

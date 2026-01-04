@@ -14,12 +14,46 @@ const router = createBrowserRouter([
     path: "/",
     Component: Root,
     hydrateFallbackElement: <Loader />,
-    loader: () => fetch("/data.json"),
     children: [
+      // ============ PUBLIC ROUTES ============
       {
         path: "/",
         lazy: () => import("@/Pages/Home"),
       },
+      {
+        path: "/about",
+        lazy: () => import("@/Pages/About"),
+      },
+      {
+        path: "/features",
+        lazy: () => import("@/Pages/Features"),
+      },
+      {
+        path: "/pricing",
+        lazy: () => import("@/Pages/Pricing"),
+      },
+      {
+        path: "/contact",
+        lazy: () => import("@/Pages/Contact"),
+      },
+      {
+        path: "/faq",
+        lazy: () => import("@/Pages/FAQPage"),
+      },
+      {
+        path: "/blog",
+        lazy: () => import("@/Pages/Blog"),
+      },
+      {
+        path: "/privacy-policy",
+        lazy: () => import("@/Pages/PrivacyPolicy"),
+      },
+      {
+        path: "/terms",
+        lazy: () => import("@/Pages/Terms"),
+      },
+
+      // ============ AUTH ROUTES ============
       {
         path: "/register",
         lazy: () => import("@/Pages/Register"),
@@ -32,6 +66,8 @@ const router = createBrowserRouter([
         path: "/forgot-password",
         lazy: () => import("@/Pages/ForgotPassword"),
       },
+
+      // ============ PRIVATE ROUTES ============
       {
         path: "/my-transactions",
         element: (

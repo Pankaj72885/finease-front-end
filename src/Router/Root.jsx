@@ -4,12 +4,12 @@ import { Outlet } from "react-router";
 
 const Root = () => {
   return (
-    <div className="font-inter flex flex-col h-screen">
-      <Header></Header>
-      <div className="flex-1">
+    <div className="font-inter flex flex-col min-h-screen">
+      <Header />
+      <main className="flex-1">
         <Outlet />
-      </div>
-      <Footer></Footer>
+      </main>
+      <Footer />
     </div>
   );
 };

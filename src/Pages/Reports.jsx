@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/select";
 import { useAuth } from "@/Contexts/AuthContext";
 import { useMonthlyData, useReports } from "@/Hooks/useReports";
-import { Calendar } from "lucide-react";
+import { BarChart3, Calendar, TrendingUp } from "lucide-react";
 import { useState } from "react";
 
 const Reports = () => {
@@ -29,38 +29,69 @@ const Reports = () => {
   );
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold mb-6">Financial Reports</h1>
-
-      {/* Filters */}
-      <div className="bg-card border rounded-lg p-4 mb-6">
-        <div className="flex flex-wrap items-center gap-4">
-          <div className="flex items-center space-x-2">
-            <Calendar size={18} />
-            <span className="font-medium">Year:</span>
+    <div className="pt-24 pb-12">
+      <div className="container-wide">
+        {/* Page Header */}
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
+          <div>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-2">
+              <BarChart3 size={14} />
+              <span>Analytics</span>
+            </div>
+            <h1 className="text-3xl font-bold font-outfit">
+              Financial Reports
+            </h1>
+            <p className="text-muted-foreground mt-1">
+              Visualize your spending patterns and financial health
+            </p>
           </div>
-          <Select value={selectedYear} onValueChange={setSelectedYear}>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Select a year" />
-            </SelectTrigger>
-            <SelectContent>
-              {years.map((year) => (
-                <SelectItem key={year} value={year}>
-                  {year}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+
+          {/* Year Filter */}
+          <div className="flex items-center gap-3 p-4 rounded-xl bg-card border border-border">
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <Calendar size={18} />
+              <span className="text-sm font-medium">Year:</span>
+            </div>
+            <Select value={selectedYear} onValueChange={setSelectedYear}>
+              <SelectTrigger className="w-[120px] rounded-xl">
+                <SelectValue placeholder="Select year" />
+              </SelectTrigger>
+              <SelectContent>
+                {years.map((year) => (
+                  <SelectItem key={year} value={year}>
+                    {year}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
         </div>
-      </div>
 
-      {/* Summary Cards */}
-      <SummaryCards summary={summary} />
+        {/* Summary Cards */}
+        <div className="mb-8">
+          <SummaryCards summary={summary} />
+        </div>
 
-      {/* Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <CategoryChart data={categoryData} />
-        <MonthlyChart data={monthlyData} isLoading={monthlyLoading} />
+        {/* Charts Section */}
+        <div className="mb-6">
+          <div className="flex items-center gap-2 mb-4">
+            <TrendingUp size={20} className="text-primary" />
+            <h2 className="text-xl font-semibold font-outfit">
+              Detailed Breakdown
+            </h2>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="card-base p-6">
+            <h3 className="text-lg font-semibold mb-4">By Category</h3>
+            <CategoryChart data={categoryData} />
+          </div>
+          <div className="card-base p-6">
+            <h3 className="text-lg font-semibold mb-4">Monthly Trend</h3>
+            <MonthlyChart data={monthlyData} isLoading={monthlyLoading} />
+          </div>
+        </div>
       </div>
     </div>
   );

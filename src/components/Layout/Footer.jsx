@@ -1,128 +1,205 @@
-import React from "react";
 import {
   Facebook,
-  Twitter,
+  Github,
   Instagram,
   Linkedin,
   Mail,
-  Phone,
   MapPin,
+  Phone,
+  Twitter,
 } from "lucide-react";
+import { Link } from "react-router";
 
 const Footer = () => {
+  const currentYear = new Date().getFullYear();
+
+  const footerLinks = {
+    product: [
+      { label: "Features", to: "/features" },
+      { label: "Pricing", to: "/pricing" },
+      { label: "Blog", to: "/blog" },
+      { label: "Changelog", to: "#" },
+    ],
+    company: [
+      { label: "About Us", to: "/about" },
+      { label: "Contact", to: "/contact" },
+      { label: "Careers", to: "#" },
+      { label: "Press Kit", to: "#" },
+    ],
+    resources: [
+      { label: "Help Center", to: "#" },
+      { label: "FAQ", to: "/faq" },
+      { label: "API Docs", to: "#" },
+      { label: "Community", to: "#" },
+    ],
+    legal: [
+      { label: "Privacy Policy", to: "/privacy-policy" },
+      { label: "Terms of Service", to: "/terms" },
+      { label: "Cookie Policy", to: "#" },
+      { label: "License", to: "#" },
+    ],
+  };
+
+  const socialLinks = [
+    { icon: Twitter, href: "https://twitter.com", label: "Twitter" },
+    { icon: Facebook, href: "https://facebook.com", label: "Facebook" },
+    { icon: Instagram, href: "https://instagram.com", label: "Instagram" },
+    { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
+    { icon: Github, href: "https://github.com", label: "GitHub" },
+  ];
+
   return (
-    <footer className="bg-card border-t">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Company Info */}
-          <div>
-            <div className="flex items-center space-x-2 mb-4">
-              <div className="w-8 h-8 bg-primary-600 rounded-md flex items-center justify-center">
-                <span className="text-black dark:text-white text-2xl font-bold">F</span>
+    <footer className="bg-card border-t border-border">
+      {/* Main Footer */}
+      <div className="container-wide py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8 lg:gap-12">
+          {/* Brand Column */}
+          <div className="lg:col-span-2">
+            <Link to="/" className="flex items-center gap-2 mb-4">
+              <div className="w-10 h-10 rounded-xl bg-gradient-primary flex items-center justify-center">
+                <span className="text-white text-xl font-bold font-outfit">
+                  F
+                </span>
               </div>
-              <span className="text-xl font-bold">FinEase</span>
-            </div>
-            <p className="text-muted-foreground mb-4">
+              <span className="text-xl font-bold font-outfit text-gradient-primary">
+                FinEase
+              </span>
+            </Link>
+
+            <p className="text-muted-foreground mb-6 max-w-sm">
               Your personal finance management solution for tracking expenses,
-              managing budgets, and achieving financial goals.
+              managing budgets, and achieving your financial goals.
             </p>
-            <div className="flex space-x-4">
-              <a
-                href="#"
-                className="text-muted-foreground hover:text-primary-600 transition-colors"
-              >
-                <Facebook size={20} />
-              </a>
-              <a
-                href="#"
-                className="text-muted-foreground hover:text-primary-600 transition-colors"
-              >
-                <Twitter size={20} />
-              </a>
-              <a
-                href="#"
-                className="text-muted-foreground hover:text-primary-600 transition-colors"
-              >
-                <Instagram size={20} />
-              </a>
-              <a
-                href="#"
-                className="text-muted-foreground hover:text-primary-600 transition-colors"
-              >
-                <Linkedin size={20} />
-              </a>
-            </div>
-          </div>
 
-          {/* Quick Links */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
-            <ul className="space-y-2">
-              <li>
-                <a
-                  href="/"
-                  className="text-muted-foreground hover:text-primary-600 transition-colors"
-                >
-                  Home
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/my-transactions"
-                  className="text-muted-foreground hover:text-primary-600 transition-colors"
-                >
-                  My Transactions
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/reports"
-                  className="text-muted-foreground hover:text-primary-600 transition-colors"
-                >
-                  Reports
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-muted-foreground hover:text-primary-600 transition-colors"
-                >
-                  Terms & Conditions
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-muted-foreground hover:text-primary-600 transition-colors"
-                >
-                  Privacy Policy
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          {/* Contact Info */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Contact Us</h3>
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2 text-muted-foreground">
+            {/* Contact Info */}
+            <div className="space-y-3">
+              <a
+                href="mailto:support@finease.com"
+                className="flex items-center gap-3 text-muted-foreground hover:text-foreground transition-colors"
+              >
                 <Mail size={18} />
                 <span>support@finease.com</span>
-              </div>
-              <div className="flex items-center space-x-2 text-muted-foreground">
+              </a>
+              <a
+                href="tel:+8801780079749"
+                className="flex items-center gap-3 text-muted-foreground hover:text-foreground transition-colors"
+              >
                 <Phone size={18} />
-                <span>+8801780079749</span>
-              </div>
-              <div className="flex items-center space-x-2 text-muted-foreground">
+                <span>+880 1780-079749</span>
+              </a>
+              <div className="flex items-center gap-3 text-muted-foreground">
                 <MapPin size={18} />
                 <span>Dashar, Madaripur, Bangladesh</span>
               </div>
             </div>
           </div>
-        </div>
 
-        <div className="mt-8 pt-8 border-t text-center text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} FinEase. All rights reserved.</p>
+          {/* Product Links */}
+          <div>
+            <h4 className="font-semibold mb-4">Product</h4>
+            <ul className="space-y-3">
+              {footerLinks.product.map((link) => (
+                <li key={link.label}>
+                  <Link
+                    to={link.to}
+                    className="text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Company Links */}
+          <div>
+            <h4 className="font-semibold mb-4">Company</h4>
+            <ul className="space-y-3">
+              {footerLinks.company.map((link) => (
+                <li key={link.label}>
+                  <Link
+                    to={link.to}
+                    className="text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Resources Links */}
+          <div>
+            <h4 className="font-semibold mb-4">Resources</h4>
+            <ul className="space-y-3">
+              {footerLinks.resources.map((link) => (
+                <li key={link.label}>
+                  <Link
+                    to={link.to}
+                    className="text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Legal Links */}
+          <div>
+            <h4 className="font-semibold mb-4">Legal</h4>
+            <ul className="space-y-3">
+              {footerLinks.legal.map((link) => (
+                <li key={link.label}>
+                  <Link
+                    to={link.to}
+                    className="text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom Bar */}
+      <div className="border-t border-border">
+        <div className="container-wide py-6">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            {/* Copyright */}
+            <p className="text-sm text-muted-foreground text-center md:text-left">
+              © {currentYear} FinEase. All rights reserved. Built with ❤️ by{" "}
+              <a
+                href="https://github.com/Pankaj72885"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary hover:underline"
+              >
+                Pankaj Bepari
+              </a>
+            </p>
+
+            {/* Social Links */}
+            <div className="flex items-center gap-4">
+              {socialLinks.map((social) => {
+                const Icon = social.icon;
+                return (
+                  <a
+                    key={social.label}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-10 h-10 rounded-xl bg-muted hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all duration-200"
+                    aria-label={social.label}
+                  >
+                    <Icon size={18} />
+                  </a>
+                );
+              })}
+            </div>
+          </div>
         </div>
       </div>
     </footer>

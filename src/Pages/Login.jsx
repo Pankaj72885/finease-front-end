@@ -1,10 +1,8 @@
-import { useState } from "react";
-
-import { Chrome, Eye, EyeOff, Lock, Mail } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/Contexts/AuthContext";
+import { Chrome, Eye, EyeOff, Lock, Mail, Sparkles } from "lucide-react";
+import { useState } from "react";
 import toast from "react-hot-toast";
 import { Link, useLocation, useNavigate } from "react-router";
 
@@ -63,133 +61,161 @@ export function Component() {
   };
 
   return (
-    <div className="flex items-center justify-center bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <div className="text-center">
-          <div className="flex justify-center">
-            <div className="w-12 h-12 bg-primary-600 rounded-md flex items-center justify-center">
-              <span className="text-black dark:text-white text-2xl font-bold">
-                FinEase
-              </span>
-            </div>
-          </div>
-          <h2 className="mt-6 text-3xl font-extrabold text-foreground">
-            Sign in to your account
-          </h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Or{" "}
-            <Link
-              to="/register"
-              className="font-medium text-primary-600 hover:text-primary-500"
-            >
-              create a new account
-            </Link>
-          </p>
-        </div>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-mesh relative overflow-hidden pt-20">
+      {/* Background Effects */}
+      <div className="absolute top-20 left-10 w-72 h-72 bg-primary/20 rounded-full blur-3xl animate-pulse-slow" />
+      <div className="absolute bottom-20 right-10 w-96 h-96 bg-secondary/20 rounded-full blur-3xl animate-pulse-slow" />
 
-        <div className="bg-card p-8 rounded-lg shadow-md">
-          <form className="space-y-6" onSubmit={handleSubmit}>
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-foreground mb-1"
-              >
-                Email address
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Mail size={18} className="text-muted-foreground" />
-                </div>
-                <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  required
-                  className="pl-10"
-                  placeholder="Enter your email"
-                  value={formData.email}
-                  onChange={handleChange}
-                />
+      <div className="container-wide relative z-10 py-12">
+        <div className="max-w-md mx-auto">
+          {/* Header */}
+          <div className="text-center mb-8">
+            <Link to="/" className="inline-flex items-center gap-2 mb-6">
+              <div className="w-12 h-12 rounded-xl bg-gradient-primary flex items-center justify-center shadow-glow-sm">
+                <span className="text-white text-2xl font-bold font-outfit">
+                  F
+                </span>
               </div>
-            </div>
+            </Link>
+            <h1 className="text-3xl font-bold font-outfit mb-2">
+              Welcome Back
+            </h1>
+            <p className="text-muted-foreground">
+              Sign in to continue managing your finances
+            </p>
+          </div>
 
-            <div>
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-foreground mb-1"
-              >
-                Password
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Lock size={18} className="text-muted-foreground" />
+          {/* Form Card */}
+          <div className="card-base p-8 shadow-xl">
+            <form className="space-y-5" onSubmit={handleSubmit}>
+              {/* Email */}
+              <div>
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium mb-2"
+                >
+                  Email Address
+                </label>
+                <div className="relative">
+                  <Mail
+                    size={18}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground"
+                  />
+                  <Input
+                    id="email"
+                    name="email"
+                    type="email"
+                    autoComplete="email"
+                    required
+                    className="pl-11 h-12 rounded-xl"
+                    placeholder="you@example.com"
+                    value={formData.email}
+                    onChange={handleChange}
+                  />
                 </div>
-                <Input
-                  id="password"
-                  name="password"
-                  type={showPassword ? "text" : "password"}
-                  autoComplete="current-password"
-                  required
-                  className="pl-10 pr-10"
-                  placeholder="Enter your password"
-                  value={formData.password}
-                  onChange={handleChange}
-                />
-                <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
+              </div>
+
+              {/* Password */}
+              <div>
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium mb-2"
+                >
+                  Password
+                </label>
+                <div className="relative">
+                  <Lock
+                    size={18}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground"
+                  />
+                  <Input
+                    id="password"
+                    name="password"
+                    type={showPassword ? "text" : "password"}
+                    autoComplete="current-password"
+                    required
+                    className="pl-11 pr-11 h-12 rounded-xl"
+                    placeholder="Enter your password"
+                    value={formData.password}
+                    onChange={handleChange}
+                  />
                   <button
                     type="button"
-                    className="text-muted-foreground hover:text-foreground focus:outline-none"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
                     onClick={() => setShowPassword(!showPassword)}
                   >
                     {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                   </button>
                 </div>
               </div>
-            </div>
 
-            <div>
-              <Button type="submit" className="w-full" disabled={isSubmitting}>
-                {isSubmitting ? "Signing in..." : "Sign in"}
+              {/* Forgot Password */}
+              <div className="flex justify-end">
+                <Link
+                  to="/forgot-password"
+                  className="text-sm text-primary hover:underline"
+                >
+                  Forgot password?
+                </Link>
+              </div>
+
+              {/* Submit Button */}
+              <Button
+                type="submit"
+                className="w-full h-12 rounded-xl bg-gradient-primary hover:opacity-90 transition-all"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? (
+                  <span className="flex items-center gap-2">
+                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    Signing in...
+                  </span>
+                ) : (
+                  "Sign In"
+                )}
               </Button>
-            </div>
-          </form>
+            </form>
 
-          <div className="mt-2 text-sm text-muted-foreground flex justify-end">
-            <Link
-              to="/forgot-password"
-              className="font-medium text-primary-600 hover:text-primary-500"
-            >
-              <Button variant="link" className="cursor-pointer">
-                Forgot Password
-              </Button>
-            </Link>
-          </div>
-
-          <div className="mt-6">
-            <div className="relative">
+            {/* Divider */}
+            <div className="relative my-6">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-border"></div>
+                <div className="w-full border-t border-border" />
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-card text-muted-foreground">
+                <span className="px-4 bg-card text-muted-foreground">
                   Or continue with
                 </span>
               </div>
             </div>
 
-            <div className="mt-6">
-              <Button
-                type="button"
-                variant="outline"
-                className="w-full"
-                onClick={handleGoogleLogin}
-                disabled={isSubmitting}
+            {/* Google Button */}
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full h-12 rounded-xl"
+              onClick={handleGoogleLogin}
+              disabled={isSubmitting}
+            >
+              <Chrome size={18} />
+              {isSubmitting ? "Signing in..." : "Continue with Google"}
+            </Button>
+
+            {/* Register Link */}
+            <p className="text-center text-sm text-muted-foreground mt-6">
+              Don't have an account?{" "}
+              <Link
+                to="/register"
+                className="text-primary font-medium hover:underline"
               >
-                <Chrome size={18} className="mr-2" />
-                {isSubmitting ? "Signing in..." : "Google"}
-              </Button>
-            </div>
+                Sign up free
+              </Link>
+            </p>
+          </div>
+
+          {/* Trust Badge */}
+          <div className="flex items-center justify-center gap-2 mt-6 text-sm text-muted-foreground">
+            <Sparkles size={16} className="text-primary" />
+            <span>Bank-grade security for your data</span>
           </div>
         </div>
       </div>
