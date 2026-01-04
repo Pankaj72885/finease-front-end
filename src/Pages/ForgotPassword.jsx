@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { auth } from "@/firebase/firebase.config";
+import { auth } from "@/lib/firebase";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { ArrowLeft, Mail, Send, Sparkles } from "lucide-react";
 import { useState } from "react";

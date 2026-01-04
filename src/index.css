@@ -1,3 +1,6 @@
+/* Google Fonts Import - Must be first */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap");
+
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -7,9 +10,6 @@
    FINEASE DESIGN SYSTEM 2026
    Modern, Vibrant, Professional
 ======================================== */
-
-/* Google Fonts Import */
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap");
 
 @theme inline {
   /* Border Radius System */
