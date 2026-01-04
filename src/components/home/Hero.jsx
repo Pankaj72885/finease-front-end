@@ -26,7 +26,7 @@ const Hero = () => {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-accent/10 rounded-full blur-3xl" />
 
       {/* Grid Pattern Overlay */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.02)_1px,transparent_1px)] dark:bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:50px_50px]" />
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.02)_1px,transparent_1px)] dark:bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-size-[50px_50px]" />
 
       <div className="container-wide relative z-10 pt-20 lg:pt-0">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -146,7 +146,7 @@ const Hero = () => {
                     (height, i) => (
                       <div
                         key={i}
-                        className="flex-1 bg-gradient-to-t from-primary to-secondary rounded-t-lg transition-all duration-500 hover:opacity-80"
+                        className="flex-1 bg-linear-to-t from-primary to-secondary rounded-t-lg transition-all duration-500 hover:opacity-80"
                         style={{ height: `${height}%` }}
                       />
                     )
@@ -177,7 +177,7 @@ const Hero = () => {
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-green-500/20 flex items-center justify-center">
                     <ArrowRight
-                      className="text-green-500 rotate-[-45deg]"
+                      className="text-green-500 -rotate-45"
                       size={20}
                     />
                   </div>
@@ -195,7 +195,7 @@ const Hero = () => {
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-red-500/20 flex items-center justify-center">
                     <ArrowRight
-                      className="text-red-500 rotate-[135deg]"
+                      className="text-red-500 rotate-135"
                       size={20}
                     />
                   </div>

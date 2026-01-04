@@ -253,7 +253,7 @@ const TransactionDetails = () => {
           {/* Footer Stats */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8 pt-6 border-t border-border">
             {/* Category Total */}
-            <div className="p-4 rounded-xl border border-border bg-gradient-to-br from-primary/5 to-secondary/5">
+            <div className="p-4 rounded-xl border border-border bg-linear-to-br from-primary/5 to-secondary/5">
               <p className="text-sm text-muted-foreground mb-1">
                 Total in "{category}"
               </p>

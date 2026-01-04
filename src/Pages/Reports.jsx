@@ -154,7 +154,7 @@ const Reports = () => {
         </div>
 
         {/* Insights Section */}
-        <div className="mt-8 card-base p-6 bg-gradient-to-br from-primary/5 to-secondary/5">
+        <div className="mt-8 card-base p-6 bg-linear-to-br from-primary/5 to-secondary/5">
           <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
             <span className="text-2xl">💡</span>
             Quick Insights

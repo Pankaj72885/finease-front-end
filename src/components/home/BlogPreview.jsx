@@ -11,7 +11,7 @@ const BlogPreview = () => {
   return (
     <section className="section-padding relative overflow-hidden">
       {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-muted/30 to-background" />
+      <div className="absolute inset-0 bg-linear-to-b from-muted/30 to-background" />
 
       <div className="container-wide relative z-10">
         {/* Section Header */}
