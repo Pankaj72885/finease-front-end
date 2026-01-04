@@ -24,7 +24,7 @@ export default function BlogDetails() {
   return (
     <div className="min-h-screen pt-24 pb-20 bg-background relative">
       {/* Background */}
-      <div className="absolute top-0 inset-x-0 h-[500px] bg-gradient-to-b from-primary/5 to-transparent -z-10" />
+      <div className="absolute top-0 inset-x-0 h-[500px] bg-linear-to-b from-primary/5 to-transparent -z-10" />
 
       <div className="container max-w-4xl px-4">
         <Button

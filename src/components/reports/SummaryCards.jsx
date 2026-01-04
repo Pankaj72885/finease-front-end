@@ -46,19 +46,19 @@ const SummaryCards = ({ summary }) => {
         return (
           <div
             key={index}
-            className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${card.bgGradient} p-6 border border-border`}
+            className={`relative overflow-hidden rounded-2xl bg-linear-to-br ${card.bgGradient} p-6 border border-border`}
           >
             {/* Background Pattern */}
             <div className="absolute top-0 right-0 w-32 h-32 opacity-10">
               <div
-                className={`w-full h-full rounded-full bg-gradient-to-br ${card.gradient} blur-2xl`}
+                className={`w-full h-full rounded-full bg-linear-to-br ${card.gradient} blur-2xl`}
               />
             </div>
 
             <div className="relative z-10">
               {/* Icon */}
               <div
-                className={`w-12 h-12 rounded-xl bg-gradient-to-br ${card.gradient} flex items-center justify-center mb-4 shadow-lg`}
+                className={`w-12 h-12 rounded-xl bg-linear-to-br ${card.gradient} flex items-center justify-center mb-4 shadow-lg`}
               >
                 <Icon size={24} className="text-white" />
               </div>

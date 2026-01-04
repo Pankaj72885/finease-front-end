@@ -195,7 +195,7 @@ const DashboardLayout = () => {
       >
         <div className="p-4 h-full flex flex-col">
           {/* User Card */}
-          <div className="p-4 rounded-xl bg-gradient-to-br from-primary/10 to-secondary/10 mb-6">
+          <div className="p-4 rounded-xl bg-linear-to-br from-primary/10 to-secondary/10 mb-6">
             <div className="flex items-center gap-3">
               {currentUser?.photoURL ? (
                 <img

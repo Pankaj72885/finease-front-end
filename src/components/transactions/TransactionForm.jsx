@@ -182,7 +182,7 @@ const TransactionForm = ({
       {/* Category & Date Row */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium mb-3 flex items-center gap-2">
+          <label className="block text-sm font-medium mb-3 items-center gap-2">
             <Tag size={16} className="text-muted-foreground" />
             Category
           </label>
@@ -207,7 +207,7 @@ const TransactionForm = ({
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-3 flex items-center gap-2">
+          <label className="block text-sm font-medium mb-3 items-center gap-2">
             <Calendar size={16} className="text-muted-foreground" />
             Date
           </label>
@@ -224,7 +224,7 @@ const TransactionForm = ({
 
       {/* Description */}
       <div>
-        <label className="block text-sm font-medium mb-3 flex items-center gap-2">
+        <label className="block text-sm font-medium mb-3 items-center gap-2">
           <FileText size={16} className="text-muted-foreground" />
           Description
           <span className="text-xs text-muted-foreground">(optional)</span>
@@ -271,7 +271,7 @@ const TransactionForm = ({
         disabled={isSubmitting || !formData.category || !formData.amount}
         className={`w-full h-14 rounded-xl text-lg font-semibold transition-all ${
           formData.type === "Income"
-            ? "bg-gradient-to-r from-green-500 to-emerald-500 hover:opacity-90"
+            ? "bg-linear-to-r from-green-500 to-emerald-500 hover:opacity-90"
             : "bg-gradient-primary hover:opacity-90"
         }`}
       >
