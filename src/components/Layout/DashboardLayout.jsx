@@ -3,6 +3,7 @@ import { useAuth } from "@/Contexts/AuthContext";
 import { useTheme } from "@/Contexts/ThemeContext";
 import {
   BarChart3,
+  BookOpen,
   ChevronDown,
   FileText,
   Home,
@@ -57,6 +58,11 @@ const DashboardLayout = () => {
       to: "/dashboard/reports",
       label: "Reports",
       icon: BarChart3,
+    },
+    {
+      to: "/dashboard/my-blogs",
+      label: "My Blogs",
+      icon: BookOpen,
     },
     {
       to: "/dashboard/profile",

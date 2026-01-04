@@ -1,5 +1,8 @@
 import AddTransaction from "@/Pages/AddTransaction";
+import BlogDetails from "@/Pages/Blog/BlogDetails";
+import BlogList from "@/Pages/Blog/BlogList";
 import DashboardOverview from "@/Pages/Dashboard/DashboardOverview";
+import MyBlogs from "@/Pages/Dashboard/MyBlogs";
 import MyTransactions from "@/Pages/MyTransactions";
 import Profile from "@/Pages/Profile";
 import Reports from "@/Pages/Reports";
@@ -45,7 +48,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/blog",
-        lazy: () => import("@/Pages/Blog"),
+        element: <BlogList />,
+      },
+      {
+        path: "/blog/:id",
+        element: <BlogDetails />,
       },
       {
         path: "/privacy-policy",
@@ -172,6 +179,10 @@ const router = createBrowserRouter([
       {
         path: "profile",
         element: <Profile />,
+      },
+      {
+        path: "my-blogs",
+        element: <MyBlogs />,
       },
     ],
   },

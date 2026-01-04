@@ -1,5 +1,5 @@
-import { auth } from "./firebase";
 import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./firebase";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
@@ -21,21 +21,44 @@ const getAuthUser = () => {
   });
 };
 
+// Generic fetch wrapper for Public Requests (No Auth)
+export const publicApiRequest = async (endpoint, options = {}) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+    ...options,
+  };
+
+  const response = await fetch(`${API_URL}${endpoint}`, {
+    ...config,
+    body: config.body ? JSON.stringify(config.body) : undefined,
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.message || "Something went wrong");
+  }
+
+  const contentType = response.headers.get("content-type");
+  if (contentType && contentType.indexOf("application/json") !== -1) {
+    return response.json();
+  }
+  return {};
+};
+
 // Generic fetch wrapper for TanStack Query
 export const apiRequest = async (endpoint, options = {}) => {
-
   const user = await getAuthUser();
 
   let token = null;
   if (user) {
-
     try {
       token = await user.getIdToken();
     } catch (error) {
       console.error("Error getting auth token:", error);
     }
   }
-
 
   if (!token) {
     // This will be caught by React Router's error boundary
@@ -76,7 +99,7 @@ export const authAPI = {
       method: "POST",
       body: { idToken },
     }),
-    
+
   // Forgot Password
   forgotPassword: (email) =>
     apiRequest("/auth/forgot-password", {
@@ -138,6 +161,25 @@ export const reportsAPI = {
     apiRequest(`/reports/monthly?userEmail=${userEmail}&year=${year}`),
 };
 
+// Blog API
+export const blogAPI = {
+  getAll: (filter = {}) => {
+    const params = new URLSearchParams();
+    if (filter.category) params.append("category", filter.category);
+    return publicApiRequest(`/blogs?${params.toString()}`);
+  },
+
+  getById: (id) => publicApiRequest(`/blogs/${id}`),
+
+  getMyBlogs: () => apiRequest("/blogs/user/me"),
+
+  create: (data) => apiRequest("/blogs", { method: "POST", body: data }),
+
+  update: (id, data) =>
+    apiRequest(`/blogs/${id}`, { method: "PUT", body: data }),
+
+  delete: (id) => apiRequest(`/blogs/${id}`, { method: "DELETE" }),
+};
 
 // Query Keys for TanStack Query
 export const queryKeys = {
@@ -151,4 +193,9 @@ export const queryKeys = {
 
   // Key for a single transaction's details
   transactionById: (id) => ["transaction", id],
+
+  // Blog keys
+  blogs: (filter = {}) => ["blogs", filter],
+  blog: (id) => ["blog", id],
+  myBlogs: ["blogs", "me"],
 };
