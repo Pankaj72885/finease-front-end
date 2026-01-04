@@ -1,45 +1,12 @@
+import { useBlogs } from "@/Hooks/useBlogs";
 import { ArrowRight, Calendar, Clock, User } from "lucide-react";
 import { Link } from "react-router";
 
 const BlogPreview = () => {
-  const posts = [
-    {
-      id: 1,
-      title: "10 Budgeting Tips That Actually Work in 2026",
-      excerpt:
-        "Discover practical budgeting strategies that help thousands of people save more money and achieve their financial goals.",
-      image:
-        "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&auto=format&fit=crop&q=60",
-      author: "Sarah Johnson",
-      date: "Jan 2, 2026",
-      readTime: "5 min read",
-      category: "Budgeting",
-    },
-    {
-      id: 2,
-      title: "Understanding Your Spending Patterns",
-      excerpt:
-        "Learn how to analyze your spending habits and use data-driven insights to make smarter financial decisions.",
-      image:
-        "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop&q=60",
-      author: "Michael Chen",
-      date: "Dec 28, 2025",
-      readTime: "7 min read",
-      category: "Analytics",
-    },
-    {
-      id: 3,
-      title: "The Complete Guide to Emergency Funds",
-      excerpt:
-        "Everything you need to know about building and maintaining an emergency fund for financial security.",
-      image:
-        "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=800&auto=format&fit=crop&q=60",
-      author: "Emily Rodriguez",
-      date: "Dec 20, 2025",
-      readTime: "8 min read",
-      category: "Savings",
-    },
-  ];
+  const { blogs, isLoading } = useBlogs();
+  const posts = blogs?.slice(0, 3) || [];
+
+  if (!isLoading && posts.length === 0) return null;
 
   return (
     <section className="section-padding relative overflow-hidden">
@@ -68,59 +35,73 @@ const BlogPreview = () => {
 
         {/* Blog Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {posts.map((post) => (
-            <article
-              key={post.id}
-              className="group card-interactive overflow-hidden"
-            >
-              {/* Image */}
-              <div className="relative h-48 overflow-hidden">
-                <img
-                  src={post.image}
-                  alt={post.title}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+          {isLoading
+            ? [1, 2, 3].map((i) => (
+                <div
+                  key={i}
+                  className="h-[400px] bg-muted/20 animate-pulse rounded-2xl"
                 />
-                <div className="absolute top-4 left-4">
-                  <span className="px-3 py-1 bg-primary text-primary-foreground text-xs font-medium rounded-full">
-                    {post.category}
-                  </span>
-                </div>
-              </div>
-
-              {/* Content */}
-              <div className="p-6">
-                {/* Meta */}
-                <div className="flex items-center gap-4 text-sm text-muted-foreground mb-3">
-                  <div className="flex items-center gap-1">
-                    <Calendar size={14} />
-                    <span>{post.date}</span>
+              ))
+            : posts.map((post) => (
+                <Link
+                  key={post._id}
+                  to={`/blog/${post._id}`}
+                  className="group card-interactive overflow-hidden flex flex-col h-full"
+                >
+                  {/* Image */}
+                  <div className="relative h-48 overflow-hidden shrink-0">
+                    <img
+                      src={post.coverImage || "https://placehold.co/600x400"}
+                      alt={post.title}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
+                    <div className="absolute top-4 left-4">
+                      <span className="px-3 py-1 bg-primary text-primary-foreground text-xs font-medium rounded-full">
+                        {post.category}
+                      </span>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-1">
-                    <Clock size={14} />
-                    <span>{post.readTime}</span>
+
+                  {/* Content */}
+                  <div className="p-6 flex-1 flex flex-col">
+                    {/* Meta */}
+                    <div className="flex items-center gap-4 text-sm text-muted-foreground mb-3">
+                      <div className="flex items-center gap-1">
+                        <Calendar size={14} />
+                        <span>
+                          {new Date(post.createdAt).toLocaleDateString()}
+                        </span>
+                      </div>
+                      {post.readTime && (
+                        <div className="flex items-center gap-1">
+                          <Clock size={14} />
+                          <span>{post.readTime}</span>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Title */}
+                    <h3 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors line-clamp-2">
+                      {post.title}
+                    </h3>
+
+                    {/* Excerpt */}
+                    <p className="text-muted-foreground text-sm mb-4 line-clamp-2 flex-1">
+                      {post.excerpt}
+                    </p>
+
+                    {/* Author */}
+                    <div className="flex items-center gap-2 pt-4 border-t border-border mt-auto">
+                      <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                        <User size={16} className="text-primary" />
+                      </div>
+                      <span className="text-sm font-medium">
+                        {post.author?.name || "Admin"}
+                      </span>
+                    </div>
                   </div>
-                </div>
-
-                {/* Title */}
-                <h3 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors line-clamp-2">
-                  {post.title}
-                </h3>
-
-                {/* Excerpt */}
-                <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
-                  {post.excerpt}
-                </p>
-
-                {/* Author */}
-                <div className="flex items-center gap-2 pt-4 border-t border-border">
-                  <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                    <User size={16} className="text-primary" />
-                  </div>
-                  <span className="text-sm font-medium">{post.author}</span>
-                </div>
-              </div>
-            </article>
-          ))}
+                </Link>
+              ))}
         </div>
       </div>
     </section>

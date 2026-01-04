@@ -2,8 +2,23 @@ import { useBlogs } from "@/Hooks/useBlogs";
 import { ArrowRight, BookOpen, Calendar, User } from "lucide-react";
 import { Link } from "react-router";
 
+import { useState } from "react";
+
 export default function BlogList() {
-  const { blogs, isLoading } = useBlogs();
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const { blogs, isLoading } = useBlogs(
+    selectedCategory === "All" ? {} : { category: selectedCategory }
+  );
+
+  const categories = [
+    "All",
+    "Budgeting",
+    "Investing",
+    "Savings",
+    "Cryptocurrency",
+    "Technology",
+    "Retirement",
+  ];
 
   return (
     <div className="min-h-screen pt-24 pb-12 bg-background relative overflow-hidden">
@@ -22,6 +37,23 @@ export default function BlogList() {
           </p>
         </div>
 
+        {/* Category Filter */}
+        <div className="flex flex-wrap justify-center gap-3 mb-12 animate-in fade-in slide-in-from-bottom-8 duration-700">
+          {categories.map((category) => (
+            <button
+              key={category}
+              onClick={() => setSelectedCategory(category)}
+              className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 border ${
+                selectedCategory === category
+                  ? "bg-primary text-primary-foreground border-primary shadow-lg shadow-primary/25 scale-105"
+                  : "bg-card text-muted-foreground border-border hover:border-primary/50 hover:text-foreground"
+              }`}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
+
         {isLoading ? (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[1, 2, 3, 4, 5, 6].map((i) => (
@@ -31,7 +63,7 @@ export default function BlogList() {
               />
             ))}
           </div>
-        ) : (
+        ) : blogs && blogs.length > 0 ? (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {blogs.map((blog) => (
               <Link
