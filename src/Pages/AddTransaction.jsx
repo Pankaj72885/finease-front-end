@@ -14,7 +14,7 @@ const AddTransaction = () => {
 
   if (!currentUser) {
     return (
-      <div className="pt-24 pb-12">
+      <div className="pb-12">
         <div className="container-tight text-center py-20">
           <div className="w-20 h-20 rounded-full bg-muted flex items-center justify-center mx-auto mb-6">
             <Receipt size={32} className="text-muted-foreground" />
@@ -37,11 +37,11 @@ const AddTransaction = () => {
   }
 
   return (
-    <div className="pt-24 pb-12">
+    <div className="pb-12">
       <div className="container-tight">
         {/* Back Link */}
         <Link
-          to="/my-transactions"
+          to="/dashboard/transactions"
           className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-6"
         >
           <ArrowLeft size={18} />

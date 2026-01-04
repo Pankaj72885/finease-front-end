@@ -5,6 +5,13 @@ import {
 } from "@/components/Common/Skeleton";
 import TransactionCard from "@/components/transactions/TransactionCard";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useAuth } from "@/Contexts/AuthContext";
 import { useTransactions } from "@/Hooks/useTransactions";
 import {
@@ -12,6 +19,7 @@ import {
   ArrowUp,
   ArrowUpDown,
   FileText,
+  Filter,
   LayoutDashboard,
   Plus,
   Search,
@@ -29,6 +37,7 @@ const MyTransactions = () => {
   const [sortBy, setSortBy] = useState("createdAt");
   const [sortOrder, setSortOrder] = useState("desc");
   const [searchQuery, setSearchQuery] = useState("");
+  const [filterType, setFilterType] = useState("all");
 
   const { transactions, isLoading, deleteTransaction } = useTransactions(
     currentUser?.email,
@@ -36,15 +45,24 @@ const MyTransactions = () => {
     sortOrder
   );
 
-  // Filter transactions by search query
+  // Filter transactions
   const filteredTransactions = transactions?.filter((t) => {
-    if (!searchQuery) return true;
-    const query = searchQuery.toLowerCase();
-    return (
-      t.category?.toLowerCase().includes(query) ||
-      t.description?.toLowerCase().includes(query) ||
-      t.type?.toLowerCase().includes(query)
-    );
+    // 1. Filter by Search Query
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      const matchesSearch =
+        t.category?.toLowerCase().includes(query) ||
+        t.description?.toLowerCase().includes(query) ||
+        t.type?.toLowerCase().includes(query);
+      if (!matchesSearch) return false;
+    }
+
+    // 2. Filter by Type (Income/Expense/All)
+    if (filterType !== "all") {
+      if (t.type?.toLowerCase() !== filterType.toLowerCase()) return false;
+    }
+
+    return true;
   });
 
   // Calculate summary stats
@@ -105,10 +123,10 @@ const MyTransactions = () => {
       <button
         onClick={() => handleSort(field)}
         aria-label={`Sort by ${label}`}
-        className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-medium transition-all ${
+        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
           isActive
-            ? "bg-primary text-primary-foreground shadow-sm"
-            : "bg-muted text-muted-foreground hover:text-foreground hover:bg-muted/80"
+            ? "bg-primary/10 text-primary"
+            : "text-muted-foreground hover:text-foreground hover:bg-muted"
         }`}
       >
         <span>{label}</span>
@@ -126,7 +144,7 @@ const MyTransactions = () => {
   };
 
   return (
-    <div className="pt-24 pb-12">
+    <div className="pb-12">
       <div className="container-wide">
         {/* Page Header */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
@@ -197,10 +215,10 @@ const MyTransactions = () => {
           </div>
         )}
 
-        {/* Search & Sort Controls */}
-        <div className="flex flex-col sm:flex-row gap-4 mb-6">
+        {/* Search & Filter & Sort Controls */}
+        <div className="flex flex-col lg:flex-row gap-4 mb-6">
           {/* Search */}
-          <div className="relative flex-1 max-w-md">
+          <div className="relative flex-1">
             <Search
               size={18}
               className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground"
@@ -215,12 +233,34 @@ const MyTransactions = () => {
             />
           </div>
 
-          {/* Sort Buttons */}
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="text-sm text-muted-foreground mr-1">Sort:</span>
-            <SortButton field="date" label="Date" />
-            <SortButton field="amount" label="Amount" />
-            <SortButton field="category" label="Category" />
+          <div className="flex flex-wrap items-center gap-4">
+            {/* Filter Dropdown */}
+            <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <Filter size={16} />
+                <span className="text-sm font-medium hidden sm:inline">
+                  Type:
+                </span>
+              </div>
+              <Select value={filterType} onValueChange={setFilterType}>
+                <SelectTrigger className="w-[130px] rounded-xl h-11">
+                  <SelectValue placeholder="All" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Types</SelectItem>
+                  <SelectItem value="income">Income Only</SelectItem>
+                  <SelectItem value="expense">Expense Only</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Sort Controls */}
+            <div className="flex items-center gap-2 bg-card border border-border p-1.5 rounded-xl h-11">
+              <span className="text-xs text-muted-foreground px-2">Sort:</span>
+              <SortButton field="date" label="Date" />
+              <SortButton field="amount" label="Amt" />
+              <SortButton field="category" label="Cat" />
+            </div>
           </div>
         </div>
 
@@ -250,14 +290,17 @@ const MyTransactions = () => {
               ))}
             </div>
           </>
-        ) : searchQuery ? (
-          // No results from search
+        ) : searchQuery || filterType !== "all" ? (
+          // No results from search/filter
           <EmptyState
             icon={Search}
             title="No matching transactions"
-            description={`No transactions found matching "${searchQuery}". Try a different search term.`}
-            actionLabel="Clear Search"
-            onAction={() => setSearchQuery("")}
+            description={`No transactions found matching your filters. Try adjusting your search term or filter.`}
+            actionLabel="Reset Filters"
+            onAction={() => {
+              setSearchQuery("");
+              setFilterType("all");
+            }}
           />
         ) : (
           // Empty state - no transactions at all

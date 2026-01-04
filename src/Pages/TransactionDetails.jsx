@@ -1,5 +1,5 @@
+import { Skeleton } from "@/components/Common/Skeleton";
 import { Button } from "@/components/ui/button";
-import { Spinner } from "@/components/ui/spinner";
 import { useAuth } from "@/Contexts/AuthContext";
 import { useTransaction, useTransactions } from "@/Hooks/useTransactions";
 import { queryKeys, transactionAPI } from "@/lib/api";
@@ -10,7 +10,6 @@ import {
   Calendar,
   DollarSign,
   Edit,
-  Eye,
   FileText,
   Tag,
   Trash2,
@@ -44,24 +43,30 @@ const TransactionDetails = () => {
 
   const handleDelete = () => {
     Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
+      title: "Delete Transaction?",
+      text: "This action cannot be undone.",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#7c3aed",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
+      cancelButtonColor: "#6b7280",
+      confirmButtonText: "Yes, delete it",
+      cancelButtonText: "Cancel",
       background: document.documentElement.classList.contains("dark")
         ? "#1f2937"
         : "#ffffff",
       color: document.documentElement.classList.contains("dark")
         ? "#f3f4f6"
         : "#1f2937",
+      customClass: {
+        popup: "rounded-2xl",
+        confirmButton: "rounded-xl",
+        cancelButton: "rounded-xl",
+      },
     }).then((result) => {
       if (result.isConfirmed) {
         deleteTransaction(id, {
           onSuccess: () => {
-            navigate("/my-transactions");
+            navigate("/dashboard/transactions");
           },
         });
       }
@@ -83,8 +88,23 @@ const TransactionDetails = () => {
     return (
       <div className="pt-24 pb-12">
         <div className="container-tight">
-          <div className="flex justify-center py-20">
-            <Spinner size="lg" />
+          <div className="card-base p-8 space-y-8">
+            <div className="flex justify-between">
+              <div className="space-y-4">
+                <Skeleton className="h-6 w-32" />
+                <Skeleton className="h-10 w-64" />
+              </div>
+              <div className="flex gap-2">
+                <Skeleton className="h-10 w-24 rounded-xl" />
+                <Skeleton className="h-10 w-24 rounded-xl" />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-6">
+              <Skeleton className="h-32 rounded-xl" />
+              <Skeleton className="h-32 rounded-xl" />
+              <Skeleton className="h-32 rounded-xl" />
+              <Skeleton className="h-32 rounded-xl" />
+            </div>
           </div>
         </div>
       </div>
@@ -102,7 +122,7 @@ const TransactionDetails = () => {
           <p className="text-muted-foreground mb-6">
             This transaction may have been deleted or doesn't exist
           </p>
-          <Link to="/my-transactions">
+          <Link to="/dashboard/transactions">
             <Button variant="outline" className="rounded-xl">
               <ArrowLeft size={16} />
               Back to Transactions
@@ -123,7 +143,7 @@ const TransactionDetails = () => {
       <div className="container-tight">
         {/* Back Link */}
         <Link
-          to="/my-transactions"
+          to="/dashboard/transactions"
           className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-6"
         >
           <ArrowLeft size={18} />
@@ -136,7 +156,7 @@ const TransactionDetails = () => {
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8 pb-6 border-b border-border">
             <div>
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-2">
-                <Eye size={14} />
+                <FileText size={14} />
                 <span>Transaction Details</span>
               </div>
               <h1 className="text-2xl font-bold font-outfit">{category}</h1>
@@ -162,7 +182,7 @@ const TransactionDetails = () => {
           {/* Details Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Amount */}
-            <div className="flex items-center gap-4 p-4 rounded-xl bg-muted/50">
+            <div className="flex items-center gap-4 p-4 rounded-xl bg-muted/50 border border-border/50">
               <div
                 className={`w-14 h-14 rounded-xl flex items-center justify-center ${
                   isIncome ? "bg-green-500/10" : "bg-red-500/10"
@@ -187,7 +207,7 @@ const TransactionDetails = () => {
             </div>
 
             {/* Type */}
-            <div className="flex items-center gap-4 p-4 rounded-xl bg-muted/50">
+            <div className="flex items-center gap-4 p-4 rounded-xl bg-muted/50 border border-border/50">
               <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center">
                 <Tag className="text-primary" size={28} />
               </div>
@@ -198,7 +218,7 @@ const TransactionDetails = () => {
             </div>
 
             {/* Category */}
-            <div className="flex items-center gap-4 p-4 rounded-xl bg-muted/50">
+            <div className="flex items-center gap-4 p-4 rounded-xl bg-muted/50 border border-border/50">
               <div className="w-14 h-14 rounded-xl bg-secondary/10 flex items-center justify-center">
                 <DollarSign className="text-secondary" size={28} />
               </div>
@@ -209,7 +229,7 @@ const TransactionDetails = () => {
             </div>
 
             {/* Date */}
-            <div className="flex items-center gap-4 p-4 rounded-xl bg-muted/50">
+            <div className="flex items-center gap-4 p-4 rounded-xl bg-muted/50 border border-border/50">
               <div className="w-14 h-14 rounded-xl bg-accent/10 flex items-center justify-center">
                 <Calendar className="text-accent" size={28} />
               </div>
@@ -224,7 +244,7 @@ const TransactionDetails = () => {
 
           {/* Description */}
           {description && (
-            <div className="mt-6 p-4 rounded-xl bg-muted/50">
+            <div className="mt-6 p-4 rounded-xl bg-muted/50 border border-border/50">
               <p className="text-sm text-muted-foreground mb-2">Description</p>
               <p className="font-medium">{description}</p>
             </div>
@@ -233,7 +253,7 @@ const TransactionDetails = () => {
           {/* Footer Stats */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8 pt-6 border-t border-border">
             {/* Category Total */}
-            <div className="p-4 rounded-xl border border-border">
+            <div className="p-4 rounded-xl border border-border bg-gradient-to-br from-primary/5 to-secondary/5">
               <p className="text-sm text-muted-foreground mb-1">
                 Total in "{category}"
               </p>
@@ -247,8 +267,8 @@ const TransactionDetails = () => {
             </div>
 
             {/* User Info */}
-            <div className="flex items-center gap-4 p-4 rounded-xl border border-border">
-              <div className="w-12 h-12 rounded-xl bg-muted flex items-center justify-center">
+            <div className="flex items-center gap-4 p-4 rounded-xl border border-border bg-muted/30">
+              <div className="w-12 h-12 rounded-xl bg-background border border-border flex items-center justify-center">
                 <User className="text-muted-foreground" size={24} />
               </div>
               <div>

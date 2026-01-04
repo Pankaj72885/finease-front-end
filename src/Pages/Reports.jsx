@@ -40,7 +40,7 @@ const Reports = () => {
   );
 
   return (
-    <div className="pt-24 pb-12">
+    <div className="pb-12">
       <div className="container-wide">
         {/* Page Header */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">

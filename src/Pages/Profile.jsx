@@ -100,7 +100,7 @@ const Profile = () => {
   }
 
   return (
-    <div className="pt-24 pb-12">
+    <div className="pb-12">
       <div className="container-tight">
         {/* Page Header */}
         <div className="mb-8">

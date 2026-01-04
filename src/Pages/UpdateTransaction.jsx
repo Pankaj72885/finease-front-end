@@ -33,7 +33,7 @@ const UpdateTransaction = () => {
             ),
           });
 
-          navigate(`/transaction/${id}`);
+          navigate(`/dashboard/transaction/${id}`);
         },
       }
     );
@@ -41,7 +41,7 @@ const UpdateTransaction = () => {
 
   if (isLoading) {
     return (
-      <div className="pt-24 pb-12">
+      <div className="pb-12">
         <div className="container-tight">
           <div className="flex justify-center py-20">
             <Spinner size="lg" />
@@ -53,7 +53,7 @@ const UpdateTransaction = () => {
 
   if (!transaction) {
     return (
-      <div className="pt-24 pb-12">
+      <div className="pb-12">
         <div className="container-tight text-center py-20">
           <div className="w-20 h-20 rounded-full bg-muted flex items-center justify-center mx-auto mb-6">
             <FileText size={32} className="text-muted-foreground" />
@@ -62,7 +62,7 @@ const UpdateTransaction = () => {
           <p className="text-muted-foreground mb-6">
             This transaction may have been deleted or doesn't exist
           </p>
-          <Link to="/my-transactions">
+          <Link to="/dashboard/transactions">
             <Button variant="outline" className="rounded-xl">
               <ArrowLeft size={16} />
               Back to Transactions
@@ -74,11 +74,11 @@ const UpdateTransaction = () => {
   }
 
   return (
-    <div className="pt-24 pb-12">
+    <div className="pb-12">
       <div className="container-tight">
         {/* Back Link */}
         <Link
-          to={`/transaction/${id}`}
+          to={`/dashboard/transaction/${id}`}
           className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-6"
         >
           <ArrowLeft size={18} />

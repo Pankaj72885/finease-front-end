@@ -76,7 +76,9 @@ const router = createBrowserRouter([
         path: "/my-transactions",
         element: (
           <PrivateRoute>
-            <MyTransactions />
+            <div className="pt-20">
+              <MyTransactions />
+            </div>
           </PrivateRoute>
         ),
       },
@@ -84,7 +86,9 @@ const router = createBrowserRouter([
         path: "/add-transaction",
         element: (
           <PrivateRoute>
-            <AddTransaction />
+            <div className="pt-20">
+              <AddTransaction />
+            </div>
           </PrivateRoute>
         ),
       },
@@ -92,7 +96,9 @@ const router = createBrowserRouter([
         path: "/transaction/:id",
         element: (
           <PrivateRoute>
-            <TransactionDetails />
+            <div className="pt-20">
+              <TransactionDetails />
+            </div>
           </PrivateRoute>
         ),
       },
@@ -100,7 +106,9 @@ const router = createBrowserRouter([
         path: "/update-transaction/:id",
         element: (
           <PrivateRoute>
-            <UpdateTransaction />
+            <div className="pt-20">
+              <UpdateTransaction />
+            </div>
           </PrivateRoute>
         ),
       },
@@ -108,7 +116,9 @@ const router = createBrowserRouter([
         path: "/reports",
         element: (
           <PrivateRoute>
-            <Reports />
+            <div className="pt-20">
+              <Reports />
+            </div>
           </PrivateRoute>
         ),
       },
@@ -116,7 +126,9 @@ const router = createBrowserRouter([
         path: "/profile",
         element: (
           <PrivateRoute>
-            <Profile />
+            <div className="pt-20">
+              <Profile />
+            </div>
           </PrivateRoute>
         ),
       },
